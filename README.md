@@ -2,6 +2,8 @@
 
 오프라인 렌즈 매장용 AI 렌즈 추천 키오스크 MVP입니다.
 
+UI는 `ykunjii-creator/lensia-site`의 LENSIA 웹 프로토타입을 기반으로 하고, 여기에 AI 이미지 분석/카메라/가상 시착 API를 연결했습니다.
+
 사진 업로드 또는 노트북 카메라 촬영으로 얼굴/눈/홍채를 분석하고, 피부색·홍채색·LPTI 힌트·가상 렌즈 시착 이미지를 생성합니다.
 
 ## 주요 기능
@@ -13,6 +15,7 @@
 - LPTI 힌트 생성
 - 렌즈 색상별 가상 시착 이미지 생성
 - 웹 화면에서 사진 업로드 또는 노트북 카메라 촬영
+- 원본 LENSIA UI 기반 홈/소개/테스트/추천 렌즈 화면
 
 ## 실행 방법
 
@@ -37,6 +40,24 @@ http://127.0.0.1:8000
 4. 피부/홍채 분석 결과 확인
 5. `가상 착용 결과`에서 시착 이미지 확인
 6. 추천 렌즈 카드의 `가상 착용` 버튼으로 렌즈 색상 변경
+
+## 프로젝트 구조
+
+```text
+.
+├─ index.html
+├─ css/
+│  ├─ style.css
+│  └─ result.css
+├─ js/
+│  ├─ script.js
+│  └─ result.js
+├─ assets/
+├─ lensia_api_server.py
+├─ lens_ratio_analyzer.py
+├─ requirements.txt
+└─ README.md
+```
 
 ## 주의
 

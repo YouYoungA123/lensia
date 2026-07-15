@@ -3,98 +3,366 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LENSIA | AI 렌즈 추천 키오스크</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="description" content="나의 렌즈 취향을 찾는 LPTI 키오스크" />
+  <title>LENSIA | LPTI Kiosk</title>
+
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="./css/result.css" />
 </head>
 <body>
-  <main class="shell">
-    <section class="hero card">
-      <div>
-        <p class="eyebrow">LENS PERSONALITY TYPE INDICATOR</p>
-        <h1>LENSIA</h1>
-        <p>사진/카메라 기반 AI 분석으로 피부색, 홍채색, LPTI 힌트와 가상 렌즈 시착을 제공합니다.</p>
-      </div>
-      <button id="go-result" class="primary">추천 렌즈 보러가기</button>
-    </section>
+  <div class="page-shell">
+    <header class="topbar glass-card">
+      <button class="brand" data-page="home" aria-label="홈으로 이동">
+        <img
+          src="assets/lensia-logo.png"
+          alt="LENSIA"
+          class="brand-logo"
+        />
+      </button>
 
-    <section id="result" class="layout">
-      <aside class="card panel">
-        <h2>홍채 컬러 분석 결과 <span>✧ AI</span></h2>
-        <form id="ai-form" class="form">
-          <label>얼굴 사진 업로드
-            <input id="image-input" name="image" type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png" />
-          </label>
-          <div class="camera">
-            <video id="camera-preview" autoplay playsinline muted></video>
-            <canvas id="camera-canvas"></canvas>
-            <div class="row">
-              <button id="camera-start" type="button" class="secondary">노트북 카메라 켜기</button>
-              <button id="camera-capture" type="button" class="secondary" disabled>촬영해서 사용</button>
+      <nav class="nav" aria-label="주요 메뉴">
+        <button class="nav-link active" data-page="home">홈</button>
+        <button class="nav-link" type="button" data-intro="main">LPTI 소개</button>
+        <button class="nav-link" data-page="quiz">테스트</button>
+        <button class="nav-link" data-page="result">추천 렌즈</button>
+        <button class="nav-link" data-scroll="guide">이용 안내</button>
+      </nav>
+
+      <button class="mobile-menu" type="button" aria-label="모바일 메뉴 열기">☰</button>
+    </header>
+
+    <main>
+    <section id="home-page" class="page active-page">
+      <section class="home-hero">
+        <div class="hero-copy">
+          <p class="hero-kicker">LENSIA AI KIOSK</p>
+          <h1 class="hero-title">
+            <span class="hero-title-line">나의 렌즈 취향을 찾는</span>
+            <span class="hero-title-line hero-title-lpti">LPTI 키오스크</span>
+          </h1>
+          <p class="hero-desc">
+            <span class="hero-desc-desktop">
+              LPTI 취향 질문과 AI 이미지 분석을 통해
+            </span>
+            <span class="hero-desc-desktop">
+              나에게 어울리는 렌즈 성향 유형과
+            </span>
+            <span class="hero-desc-desktop">
+              맞춤 렌즈를 추천해 드립니다.
+            </span>
+
+            <span class="hero-desc-mobile">
+              LPTI 취향 질문과 AI 이미지 분석을 통해 나에게 어울리는
+            </span>
+            <span class="hero-desc-mobile">
+              렌즈 성향 유형과 맞춤 렌즈를 추천드립니다.
+            </span>
+          </p>
+
+          <button class="hero-cta" data-page="quiz" type="button">
+            <span>테스트 시작하기</span>
+            <b>»</b>
+          </button>
+        </div>
+
+        <div class="hero-visual-collage">
+  <img
+    src="assets/analysis-panel.png"
+    alt="홍채 분석 화면"
+    class="visual analysis-image"
+  />
+
+  <div class="result-card-row">
+  <button class="result-card-button" type="button" data-intro="wc">
+    <img
+      src="assets/card-wc.png"
+      class="result-card"
+      alt="Warm Cool 유형"
+    />
+  </button>
+
+  <button class="result-card-button" type="button" data-intro="eu">
+    <img
+      src="assets/card-eu.png"
+      class="result-card"
+      alt="Everyday Unique 유형"
+    />
+  </button>
+
+  <button class="result-card-button" type="button" data-intro="pk">
+    <img
+      src="assets/card-pk.png"
+      class="result-card"
+      alt="Puppy Kitty 유형"
+    />
+  </button>
+
+  <button
+    class="result-card-button"
+    type="button"
+    data-intro="lm"
+    aria-label="Large Medium 소개 보기"
+  >
+    <img
+      src="assets/card-lm.png"
+      class="result-card"
+      alt="Large Medium 유형"
+    />
+  </button>
+</div>
+
+</div>
+      </section>
+
+        <section id="intro" class="feature-grid">
+          <article class="feature-card glass-card">
+            <div class="feature-image-box">
+              <img
+                src="assets/feature-test.png"
+                alt="LPTI 취향 테스트"
+                class="feature-image"
+              />
             </div>
+
+            <div>
+              <h2>LPTI 취향 테스트</h2>
+              <p>
+                LPTI 취향 질문으로<br />
+                나의 렌즈 스타일을 찾아보세요
+              </p>
+            </div>
+          </article>
+          
+          <article class="feature-card glass-card">
+            <div class="feature-image-box">
+              <img
+                src="assets/feature-analysis.png"
+                alt="AI 이미지 분석"
+                class="feature-image"
+              />
+            </div>
+
+            <div>
+              <h2>AI 이미지 분석</h2>
+              <p>
+                홍채 컬러와 얼굴 이미지를 분석해<br />
+                나에게 어울리는 렌즈를 추천해 드려요
+              </p>
+            </div>
+          </article>
+
+          <article class="feature-card glass-card">
+            <div class="feature-image-box">
+              <img
+                src="assets/feature-ar.png"
+                alt="가상 착용 체험"
+                class="feature-image"
+              />
+            </div>
+
+            <div>
+              <h2>가상 착용 체험</h2>
+              <p>
+                추천 렌즈를 AR로 착용해 보고<br />
+                나에게 어울리는지 확인해 보세요
+              </p>
+            </div>
+          </article>
+        </section>
+
+        <button class="cta" data-page="quiz">
+          <span>✦</span>
+          <div>
+            <strong>LPTI 테스트 시작하기</strong>
+            <small>START LPTI</small>
           </div>
-          <div class="row">
-            <label>렌즈 색
-              <input name="lens_color" value="#8B5E3C" />
-            </label>
-            <label>그래픽 배율
-              <input name="graphic_scale" type="number" min="0.5" max="1.6" step="0.01" value="1.00" />
-            </label>
+          <b>›</b>
+        </button>
+
+        <section id="guide" class="guide-card glass-card">
+          <span>01</span><p>취향 질문 선택</p><b>→</b>
+          <span>02</span><p>AI 이미지 분석</p><b>→</b>
+          <span>03</span><p>LPTI 결과 확인</p><b>→</b>
+          <span>04</span><p>렌즈 추천·가상 착용</p>
+        </section>
+      </section>
+
+      <section id="intro-page" class="page">
+        <div id="intro-root"></div>
+      </section>
+
+      <section id="quiz-page" class="page">
+        <section class="quiz-shell glass-card">
+          <div class="quiz-header">
+            <div>
+              <p class="eyebrow">LPTI TEST</p>
+              <h1>당신의 렌즈 취향을 알려주세요</h1>
+            </div>
+            <button class="ghost-button" data-page="home">처음으로</button>
           </div>
-          <button id="analyze-button" class="primary" type="submit">AI 분석하기</button>
-          <p id="status">사진 업로드 또는 카메라 촬영 후 분석해 주세요.</p>
-        </form>
 
-        <div id="summary" class="summary">
-          <b>분석 대기 중</b>
-          <span>skinColor / irisColor / LPTI가 여기에 표시됩니다.</span>
-        </div>
-      </aside>
+          <div class="progress-wrap">
+            <div class="progress-meta"><span id="progress-label">01 / 04</span><b id="progress-percent">25%</b></div>
+            <div class="progress-track"><span id="progress-bar"></span></div>
+          </div>
 
-      <section class="card panel">
-        <h2>가상 착용 결과</h2>
-        <p id="tryon-help">분석 후 추천 렌즈의 가상 착용 버튼을 누르면 결과가 크게 표시됩니다.</p>
-        <div class="tryon-grid">
-          <figure>
-            <figcaption>시착 결과</figcaption>
-            <img id="tryon-image" src="" alt="가상 착용 결과" />
-          </figure>
-          <figure>
-            <figcaption>측정 기준</figcaption>
-            <img id="annotated-image" src="" alt="측정 기준 이미지" />
-          </figure>
-        </div>
+          <div id="question-card" class="question-card">
+            <p class="question-kicker">QUESTION 01</p>
+            <h2 id="question-title"></h2>
+            <p id="question-description" class="question-description"></p>
+            <div id="answer-grid" class="answer-grid"></div>
+          </div>
 
-        <h2>나의 LPTI</h2>
-        <article class="type-box">
-          <strong id="type-code">분석 전</strong>
-          <span id="type-full">사진 분석을 먼저 진행해 주세요.</span>
-        </article>
+          <div class="quiz-actions">
+            <button id="prev-question" class="secondary-button" type="button">이전</button>
+            <button id="next-question" class="primary-button" type="button" disabled>다음</button>
+          </div>
+        </section>
+      </section>
 
-        <h2>추천 렌즈</h2>
-        <div class="products">
-          <article class="product">
-            <div class="lens brown"></div>
-            <h3>Soft Brown Daily</h3>
-            <p>따뜻한 데일리 브라운</p>
-            <button class="try-button" data-lens-color="#8B5E3C">가상 착용</button>
-          </article>
-          <article class="product">
-            <div class="lens beige"></div>
-            <h3>Briny Beige</h3>
-            <p>은은한 베이지 발색</p>
-            <button class="try-button" data-lens-color="#C7A46D">가상 착용</button>
-          </article>
-          <article class="product">
-            <div class="lens gray"></div>
-            <h3>Clear Gray Mood</h3>
-            <p>차분한 그레이 무드</p>
-            <button class="try-button" data-lens-color="#6E7478">가상 착용</button>
-          </article>
+      <section id="result-page" class="page">
+        <section class="result-layout">
+          <aside class="iris-panel glass-card">
+            <div class="section-heading">
+              <h2>홍채 컬러 분석 결과</h2>
+              <span>✧ AI</span>
+            </div>
+
+            <form id="ai-upload-form" class="ai-upload-form">
+              <label>
+                얼굴 사진 업로드
+                <input id="ai-image-input" name="image" type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png" />
+              </label>
+              <div class="camera-box">
+                <video id="camera-preview" class="camera-preview" autoplay playsinline muted></video>
+                <canvas id="camera-canvas" class="camera-canvas"></canvas>
+                <div class="camera-actions">
+                  <button id="camera-start" class="secondary-button" type="button">노트북 카메라 켜기</button>
+                  <button id="camera-capture" class="secondary-button" type="button" disabled>촬영해서 사용</button>
+                </div>
+              </div>
+              <div class="ai-upload-row">
+                <label>
+                  렌즈 색
+                  <input name="lens_color" type="text" value="#8B5E3C" />
+                </label>
+                <label>
+                  그래픽 배율
+                  <input name="graphic_scale" type="number" min="0.5" max="1.6" step="0.01" value="1.00" />
+                </label>
+              </div>
+              <button id="ai-analyze-button" class="primary-button" type="submit">AI 분석하기</button>
+              <p id="ai-status" class="ai-status">사진을 업로드하거나 카메라로 촬영하면 결과가 반영됩니다.</p>
+            </form>
+
+            <img id="ai-preview-image" class="iris-image" src="assets/iris.png" alt="분석된 홍채 또는 가상 시착 이미지" />
+
+            <div id="ai-swatches" class="swatches">
+              <span style="--sw:#5a3010">5A3010</span>
+              <span style="--sw:#836853">836853</span>
+              <span style="--sw:#c9894a">C9894A</span>
+              <span style="--sw:#7b4c29">7B4C29</span>
+            </div>
+
+            <div id="ai-summary" class="ai-summary">
+              <b>분석 대기 중</b>
+              <span>skinColor / irisColor / LPTI가 여기에 표시됩니다.</span>
+            </div>
+
+            <h3>컬러 분포</h3>
+            <div class="bars">
+              <div class="bar-row"><div class="bar-track"><div class="bar-fill" style="--w:45%;--c:#65330f"></div><b>Coffee Brown</b></div><span>45%</span></div>
+              <div class="bar-row"><div class="bar-track"><div class="bar-fill" style="--w:35%;--c:#927a67"></div><b>Beige Brown</b></div><span>35%</span></div>
+              <div class="bar-row"><div class="bar-track"><div class="bar-fill" style="--w:15%;--c:#d39049"></div><b>Amber Brown</b></div><span>15%</span></div>
+              <div class="bar-row"><div class="bar-track"><div class="bar-fill" style="--w:5%;--c:#a7a7aa"></div><b>Other</b></div><span>5%</span></div>
+            </div>
+          </aside>
+
+          <section class="lpti-panel glass-card">
+            <div class="result-topbar">
+              <h2>나의 LPTI</h2>
+              <button class="save-button" type="button">결과 저장</button>
+            </div>
+
+            <div class="result-summary">
+              <article class="type-card">
+                <div class="type-card-top"><span>BEST MATCH</span><b id="match-score">92%</b></div>
+                <strong id="type-code">WEPL</strong>
+                <small id="type-full">Warm Everyday Puppy Large</small>
+                <h3 id="type-name">포근한 밀크 브라운 타입</h3>
+                <div class="palette"><i></i><i></i><i></i><i></i></div>
+              </article>
+
+              <div class="axis-panel">
+                <div class="axis-row"><b>Warm</b><div class="axis warm"><span id="axis-wc"></span></div><b>Cool</b></div>
+                <div class="axis-row"><b>Everyday</b><div class="axis everyday"><span id="axis-eu"></span></div><b>Unique</b></div>
+                <div class="axis-row"><b>Puppy</b><div class="axis puppy"><span id="axis-pk"></span></div><b>Kitty</b></div>
+                <div class="axis-row"><b>Large</b><div class="axis size"><span id="axis-lm"></span></div><b>Medium</b></div>
+              </div>
+            </div>
+
+            <div class="recommend-heading">
+              <h2>추천 렌즈</h2>
+              <p id="type-description">따뜻하고 부드러운 인상을 살려주는 자연스러운 브라운 렌즈를 추천해요.</p>
+            </div>
+
+            <section id="tryon-result-panel" class="tryon-result-panel">
+              <div>
+                <p class="eyebrow">VIRTUAL TRY-ON</p>
+                <h2>가상 착용 결과</h2>
+                <p id="tryon-help">사진 업로드 또는 카메라 촬영 후 추천 렌즈의 가상 착용 버튼을 누르면 여기에 크게 표시됩니다.</p>
+              </div>
+              <div class="tryon-images">
+                <figure>
+                  <figcaption>시착 결과</figcaption>
+                  <img id="tryon-result-image" src="assets/iris.png" alt="가상 착용 결과" />
+                </figure>
+                <figure>
+                  <figcaption>측정 기준</figcaption>
+                  <img id="tryon-annotated-image" src="assets/iris.png" alt="눈 위치 측정 이미지" />
+                </figure>
+              </div>
+            </section>
+
+            <div class="product-grid">
+              <article class="product-card">
+                <span class="best-label">BEST</span>
+                <img src="assets/lens1.png" alt="디오네 소프트 브라운 렌즈" />
+                <h3>젬아워 디오네 소프트 브라운</h3>
+                <p>따뜻한 인상을 살리는 자연스럽고 맑은 브라운</p>
+                <div class="meta"><span>14.2mm</span><span>KRW 25,000</span></div>
+                <div class="product-actions"><button class="try-button" data-lens-color="#8B5E3C">✦ 가상 착용</button><button class="detail-button">상세 보기</button></div>
+              </article>
+
+              <article class="product-card">
+                <img src="assets/lens2.png" alt="브리니 베이지 렌즈" />
+                <h3>마이피프 피픈 브리니 베이지</h3>
+                <p>반짝이는 글리터와 부드러운 베이지 컬러의 조화</p>
+                <div class="meta"><span>14.0mm</span><span>KRW 28,000</span></div>
+                <div class="product-actions"><button class="try-button" data-lens-color="#C7A46D">✦ 가상 착용</button><button class="detail-button">상세 보기</button></div>
+              </article>
+
+              <article class="product-card">
+                <img src="assets/lens3.png" alt="밀크앤티 크림모카 렌즈" />
+                <h3>츄렌즈 밀크앤티 크림모카</h3>
+                <p>데일리로 착용하기 좋은 차분한 밀크 브라운</p>
+                <div class="meta"><span>13.8mm</span><span>KRW 22,000</span></div>
+                <div class="product-actions"><button class="try-button" data-lens-color="#6B4A35">✦ 가상 착용</button><button class="detail-button">상세 보기</button></div>
+              </article>
+            </div>
+          </section>
+        </section>
+
+        <div class="result-actions">
+          <button id="restart-test" class="result-action-button" type="button">↻ 처음부터 다시 하기</button>
+          <button class="result-action-button" data-page="quiz">✦ 다른 스타일 테스트하기</button>
         </div>
       </section>
-    </section>
-  </main>
-  <div id="toast" class="toast"></div>
-  <script src="script.js"></script>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="./js/script.js"></script>
+  <script src="./js/result.js"></script>
 </body>
 </html>
