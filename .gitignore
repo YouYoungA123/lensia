@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+ai_models/
+web_uploads/
+web_output/
+output/
+input_images/
+.env
+.DS_Store
+Thumbs.db
