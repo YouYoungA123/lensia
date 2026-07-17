@@ -7,7 +7,10 @@
   <title>LENSIA | LPTI Kiosk</title>
 
   <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="./css/intro.css">
+  <link rel="stylesheet" href="./css/iris.css" />
   <link rel="stylesheet" href="./css/result.css" />
+
 </head>
 <body>
   <div class="page-shell">
@@ -23,12 +26,10 @@
       <nav class="nav" aria-label="주요 메뉴">
         <button class="nav-link active" data-page="home">홈</button>
         <button class="nav-link" type="button" data-intro="main">LPTI 소개</button>
-        <button class="nav-link" data-page="quiz">테스트</button>
-        <button class="nav-link" data-page="result">추천 렌즈</button>
-        <button class="nav-link" data-scroll="guide">이용 안내</button>
+        <button class="nav-link" data-page="quiz">진단하기</button>
+        <button class="nav-link" data-page="result">결과보기</button>
       </nav>
 
-      <button class="mobile-menu" type="button" aria-label="모바일 메뉴 열기">☰</button>
     </header>
 
     <main>
@@ -220,149 +221,514 @@
         </section>
       </section>
 
-      <section id="result-page" class="page">
-        <section class="result-layout">
-          <aside class="iris-panel glass-card">
-            <div class="section-heading">
-              <h2>홍채 컬러 분석 결과</h2>
-              <span>✧ AI</span>
+      <!-- =====================================================
+          홍채 이미지 분석 페이지
+          LPTI 설문 완료 후 표시되는 진단하기 두 번째 단계
+      ===================================================== -->
+      <section id="iris-page" class="page">
+        <section class="iris-analysis-shell glass-card">
+
+          <div class="iris-analysis-header">
+            <div>
+              <p class="iris-eyebrow">IRIS ANALYSIS</p>
+              <h1>홍채 이미지 분석</h1>
+              <p class="iris-header-description">
+                눈 이미지 분석을 통해 홍채 컬러와 눈동자 비율을 확인하고<br />
+                나에게 더욱 잘 어울리는 렌즈를 추천해 드려요.
+              </p>
             </div>
 
-            <form id="ai-upload-form" class="ai-upload-form">
-              <label>
-                얼굴 사진 업로드
-                <input id="ai-image-input" name="image" type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png" />
-              </label>
-              <div class="camera-box">
-                <video id="camera-preview" class="camera-preview" autoplay playsinline muted></video>
-                <canvas id="camera-canvas" class="camera-canvas"></canvas>
-                <div class="camera-actions">
-                  <button id="camera-start" class="secondary-button" type="button">노트북 카메라 켜기</button>
-                  <button id="camera-capture" class="secondary-button" type="button" disabled>촬영해서 사용</button>
+            <button
+              type="button"
+              class="iris-home-button ghost-button"
+              data-page="home"
+            >
+              처음으로
+            </button>
+          </div>
+
+          <div class="iris-analysis-content">
+
+            <!-- 왼쪽: 업로드 방법 -->
+            <section class="iris-control-panel">
+              <div class="iris-step-heading">
+                <span class="iris-step-number">01</span>
+
+                <div>
+                  <h2>눈 이미지를 준비해 주세요</h2>
+                  <p>
+                    정면에서 촬영한 선명한 눈 사진을 사용하면<br />
+                    더욱 정확한 분석 결과를 확인할 수 있어요.
+                  </p>
                 </div>
               </div>
-              <div class="ai-upload-row">
-                <label>
-                  렌즈 색
-                  <input name="lens_color" type="text" value="#8B5E3C" />
-                </label>
-                <label>
-                  그래픽 배율
-                  <input name="graphic_scale" type="number" min="0.5" max="1.6" step="0.01" value="1.00" />
-                </label>
+
+              <div class="iris-button-group">
+                <button
+                  id="iris-camera-button"
+                  class="iris-main-button iris-camera-button"
+                  type="button"
+                >
+                  <img
+                    src="./assets/iris-camera-icon.png"
+                    alt=""
+                    class="iris-button-image"
+                  />
+
+                  <span class="iris-button-copy">
+                    <strong>카메라로 촬영하기</strong>
+                    <small>기기의 카메라로 눈 사진을 촬영해요</small>
+                  </span>
+
+                  <span class="iris-button-arrow">›</span>
+                </button>
+
+                <button
+                  id="iris-upload-button"
+                  class="iris-main-button iris-upload-button"
+                  type="button"
+                >
+                  <img
+                    src="./assets/iris-upload-icon.png"
+                    alt=""
+                    class="iris-button-image"
+                  />
+
+                  <span class="iris-button-copy">
+                    <strong>이미지 업로드하기</strong>
+                    <small>저장된 눈 사진을 불러와요</small>
+                  </span>
+
+                  <span class="iris-button-arrow">›</span>
+                </button>
               </div>
-              <button id="ai-analyze-button" class="primary-button" type="submit">AI 분석하기</button>
-              <p id="ai-status" class="ai-status">사진을 업로드하거나 카메라로 촬영하면 결과가 반영됩니다.</p>
-            </form>
 
-            <img id="ai-preview-image" class="iris-image" src="assets/iris.png" alt="분석된 홍채 또는 가상 시착 이미지" />
+              <!-- 일반 이미지 업로드 -->
+              <input
+                id="iris-file-input"
+                type="file"
+                accept="image/*"
+                hidden
+              />
 
-            <div id="ai-swatches" class="swatches">
-              <span style="--sw:#5a3010">5A3010</span>
-              <span style="--sw:#836853">836853</span>
-              <span style="--sw:#c9894a">C9894A</span>
-              <span style="--sw:#7b4c29">7B4C29</span>
-            </div>
+              <!-- 카메라 촬영용 -->
+              <input
+                id="iris-camera-input"
+                type="file"
+                accept="image/*"
+                capture="environment"
+                hidden
+              />
 
-            <div id="ai-summary" class="ai-summary">
-              <b>분석 대기 중</b>
-              <span>skinColor / irisColor / LPTI가 여기에 표시됩니다.</span>
-            </div>
-
-            <h3>컬러 분포</h3>
-            <div class="bars">
-              <div class="bar-row"><div class="bar-track"><div class="bar-fill" style="--w:45%;--c:#65330f"></div><b>Coffee Brown</b></div><span>45%</span></div>
-              <div class="bar-row"><div class="bar-track"><div class="bar-fill" style="--w:35%;--c:#927a67"></div><b>Beige Brown</b></div><span>35%</span></div>
-              <div class="bar-row"><div class="bar-track"><div class="bar-fill" style="--w:15%;--c:#d39049"></div><b>Amber Brown</b></div><span>15%</span></div>
-              <div class="bar-row"><div class="bar-track"><div class="bar-fill" style="--w:5%;--c:#a7a7aa"></div><b>Other</b></div><span>5%</span></div>
-            </div>
-          </aside>
-
-          <section class="lpti-panel glass-card">
-            <div class="result-topbar">
-              <h2>나의 LPTI</h2>
-              <button class="save-button" type="button">결과 저장</button>
-            </div>
-
-            <div class="result-summary">
-              <article class="type-card">
-                <div class="type-card-top"><span>BEST MATCH</span><b id="match-score">92%</b></div>
-                <strong id="type-code">WEPL</strong>
-                <small id="type-full">Warm Everyday Puppy Large</small>
-                <h3 id="type-name">포근한 밀크 브라운 타입</h3>
-                <div class="palette"><i></i><i></i><i></i><i></i></div>
-              </article>
-
-              <div class="axis-panel">
-                <div class="axis-row"><b>Warm</b><div class="axis warm"><span id="axis-wc"></span></div><b>Cool</b></div>
-                <div class="axis-row"><b>Everyday</b><div class="axis everyday"><span id="axis-eu"></span></div><b>Unique</b></div>
-                <div class="axis-row"><b>Puppy</b><div class="axis puppy"><span id="axis-pk"></span></div><b>Kitty</b></div>
-                <div class="axis-row"><b>Large</b><div class="axis size"><span id="axis-lm"></span></div><b>Medium</b></div>
+              <div class="iris-file-status" aria-live="polite">
+                <span id="iris-file-status-icon">○</span>
+                <p id="iris-file-status-text">
+                  아직 선택된 이미지가 없어요.
+                </p>
               </div>
-            </div>
 
-            <div class="recommend-heading">
-              <h2>추천 렌즈</h2>
-              <p id="type-description">따뜻하고 부드러운 인상을 살려주는 자연스러운 브라운 렌즈를 추천해요.</p>
-            </div>
+              <div class="iris-control-actions">
+                <button
+                  id="iris-analyze-button"
+                  class="iris-analyze-button"
+                  type="button"
+                  disabled
+                >
+                  <span id="iris-analyze-button-text">홍채 이미지 분석하기</span>
+                  <b>›</b>
+                </button>
 
-            <section id="tryon-result-panel" class="tryon-result-panel">
-              <div>
-                <p class="eyebrow">VIRTUAL TRY-ON</p>
-                <h2>가상 착용 결과</h2>
-                <p id="tryon-help">사진 업로드 또는 카메라 촬영 후 추천 렌즈의 가상 착용 버튼을 누르면 여기에 크게 표시됩니다.</p>
-              </div>
-              <div class="tryon-images">
-                <figure>
-                  <figcaption>시착 결과</figcaption>
-                  <img id="tryon-result-image" src="assets/iris.png" alt="가상 착용 결과" />
-                </figure>
-                <figure>
-                  <figcaption>측정 기준</figcaption>
-                  <img id="tryon-annotated-image" src="assets/iris.png" alt="눈 위치 측정 이미지" />
-                </figure>
+                <button
+                  id="iris-skip-button"
+                  class="iris-skip-button"
+                  type="button"
+                >
+                  홍채 분석 없이 결과보기
+                </button>
               </div>
             </section>
 
-            <div class="product-grid">
-              <article class="product-card">
-                <span class="best-label">BEST</span>
-                <img src="assets/lens1.png" alt="디오네 소프트 브라운 렌즈" />
-                <h3>젬아워 디오네 소프트 브라운</h3>
-                <p>따뜻한 인상을 살리는 자연스럽고 맑은 브라운</p>
-                <div class="meta"><span>14.2mm</span><span>KRW 25,000</span></div>
-                <div class="product-actions"><button class="try-button" data-lens-color="#8B5E3C">✦ 가상 착용</button><button class="detail-button">상세 보기</button></div>
-              </article>
+            <!-- 오른쪽: 미리보기 -->
+            <section class="iris-preview-panel">
+              <div class="iris-preview-heading">
+                <div>
+                  <span>✦</span>
+                  <strong>미리보기</strong>
+                </div>
 
-              <article class="product-card">
-                <img src="assets/lens2.png" alt="브리니 베이지 렌즈" />
-                <h3>마이피프 피픈 브리니 베이지</h3>
-                <p>반짝이는 글리터와 부드러운 베이지 컬러의 조화</p>
-                <div class="meta"><span>14.0mm</span><span>KRW 28,000</span></div>
-                <div class="product-actions"><button class="try-button" data-lens-color="#C7A46D">✦ 가상 착용</button><button class="detail-button">상세 보기</button></div>
-              </article>
+                <button
+                  id="iris-remove-button"
+                  class="iris-remove-button"
+                  type="button"
+                  hidden
+                >
+                  이미지 삭제
+                </button>
+              </div>
 
-              <article class="product-card">
-                <img src="assets/lens3.png" alt="밀크앤티 크림모카 렌즈" />
-                <h3>츄렌즈 밀크앤티 크림모카</h3>
-                <p>데일리로 착용하기 좋은 차분한 밀크 브라운</p>
-                <div class="meta"><span>13.8mm</span><span>KRW 22,000</span></div>
-                <div class="product-actions"><button class="try-button" data-lens-color="#6B4A35">✦ 가상 착용</button><button class="detail-button">상세 보기</button></div>
-              </article>
+              <div id="iris-preview-box" class="iris-preview-box">
+                <img
+                  id="iris-preview-image"
+                  class="iris-preview-image"
+                  alt="선택한 눈 이미지 미리보기"
+                  hidden
+                />
+
+                <div
+                  id="iris-preview-placeholder"
+                  class="iris-preview-placeholder"
+                >
+                  <div class="iris-placeholder-eye">
+                    <span class="iris-placeholder-pupil"></span>
+                  </div>
+
+                  <strong>눈 이미지 미리보기</strong>
+                  <p>
+                    카메라로 촬영하거나<br />
+                    이미지를 업로드해 주세요.
+                  </p>
+                </div>
+
+                <div class="iris-scan-corner iris-scan-corner-top-left"></div>
+                <div class="iris-scan-corner iris-scan-corner-top-right"></div>
+                <div class="iris-scan-corner iris-scan-corner-bottom-left"></div>
+                <div class="iris-scan-corner iris-scan-corner-bottom-right"></div>
+
+                <div
+                  id="iris-analysis-loading"
+                  class="iris-analysis-loading"
+                  hidden
+                >
+                  <span class="iris-loading-circle"></span>
+                  <strong>홍채 이미지를 분석하고 있어요</strong>
+                  <p>잠시만 기다려 주세요.</p>
+                </div>
+              </div>
+
+              <p class="iris-preview-note">
+                눈을 정면으로 바라보고 홍채가 선명하게 보이는 이미지를 사용해 주세요.
+              </p>
+            </section>
+          </div>
+
+          <!-- 아래 촬영 가이드 -->
+          <section class="iris-guide-list">
+            <article class="iris-guide-item">
+                <img
+                  src="./assets/iris-light-icon.png"
+                  alt=""
+                  class="iris-guide-icon-image"
+                />
+
+              <div>
+                <strong>밝은 곳에서 촬영해 주세요</strong>
+                <p>눈동자 색이 선명하게 보이는 환경이 좋아요.</p>
+              </div>
+            </article>
+
+            <article class="iris-guide-item">
+                <img
+                  src="./assets/iris-center-icon.png"
+                  alt=""
+                  class="iris-guide-icon-image"
+                />
+              <div>
+                <strong>눈동자를 정면에 맞춰 주세요</strong>
+                <p>카메라를 바라보고 눈을 자연스럽게 떠 주세요.</p>
+              </div>
+            </article>
+
+            <article class="iris-guide-item">
+                <img
+                  src="./assets/iris-filter-icon.png"
+                  alt=""
+                  class="iris-guide-icon-image"
+                />
+
+              <div>
+                <strong>필터 없는 이미지를 사용해 주세요</strong>
+                <p>뷰티 필터와 컬러 보정은 분석 결과에 영향을 줄 수 있어요.</p>
+              </div>
+            </article>
+          </section>
+
+        </section>
+      </section>
+      <!-- 기존 index.html의
+          <section id="result-page" class="page"> ... </section>
+          전체를 아래 코드로 교체하세요. -->
+
+      <section id="result-page" class="page">
+        <section class="result-dashboard">
+          <div class="result-upper">
+            <!-- 왼쪽: 홍채 분석 결과 -->
+            <aside class="result-iris-card glass-card">
+              <div class="result-section-title">
+                <h2>홍채 컬러 분석 결과</h2>
+                <span>✧ AI</span>
+              </div>
+
+              <div id="result-iris-preview" class="result-iris-preview is-empty">
+                <img
+                  id="result-iris-image"
+                  class="result-iris-image"
+                  alt="분석된 홍채 이미지"
+                  hidden
+                />
+
+                <div id="result-iris-placeholder" class="result-iris-placeholder">
+                    <img
+                      src="./assets/iris-empty-image.png"
+                      alt=""
+                      class="iris-preview-empty-image"
+                    />
+                  <strong>홍채 이미지가 아직 없어요</strong>
+                  <p>사진 촬영 혹은 이미지 첨부하기</p>
+                  <button type="button" class="result-placeholder-button" data-page="iris">
+                    홍채 분석하러 가기
+                  </button>
+                </div>
+
+                <div class="result-iris-ring" aria-hidden="true">
+                  <span style="--ring:#5a3010"></span>
+                  <span style="--ring:#836853"></span>
+                  <span style="--ring:#c9894a"></span>
+                  <span style="--ring:#7b4c29"></span>
+                  <b>분석 대기</b>
+                </div>
+              </div>
+
+              <div class="result-color-chips">
+                <span style="--chip:#c9a2a4"><small>SKIN</small><b>C9A2A4</b></span>
+                <span style="--chip:#3c282b"><small>IRIS</small><b>3C282B</b></span>
+                <span style="--chip:#8b5e3c"><small>LENS</small><b>8B5E3C</b></span>
+                <span style="--chip:#3c282b"><small>TONE</small><b>3C282B</b></span>
+              </div>
+
+              <dl class="result-analysis-list">
+                <div><dt>피부</dt><dd>#C9A2A4 / warm-light</dd></div>
+                <div><dt>홍채</dt><dd>#3C282B / dark-warm</dd></div>
+                <div><dt>눈·얼굴 비율</dt><dd>19.90%</dd></div>
+                <div><dt>피부 HSV</dt><dd>H 356, S 0.1922, V 0.7882</dd></div>
+                <div><dt>홍채 HSV</dt><dd>H 352, S 0.3373, V 0.2314</dd></div>
+              </dl>
+
+              <p id="iris-result-status" class="result-analysis-note">
+                · 홍채 이미지 미분석 — LPTI 취향 기반 결과
+              </p>
+            </aside>
+
+            <!-- 오른쪽: LPTI + 추천 제품 -->
+            <section class="result-main-column">
+              <section class="result-lpti-card glass-card">
+                <h2>나의 LPTI</h2>
+
+                <div class="result-lpti-content">
+                  <div class="result-character-visual">
+                    <img
+                      id="result-character-image"
+                      class="result-character-image"
+                      src="./assets/characters/WEPL.png"
+                      alt="WEPL 유형 캐릭터"
+                    />
+                  </div>
+
+                  <article class="result-type-summary">
+                    <div class="result-type-badges">
+                      <span>BEST MATCH</span>
+                    </div>
+
+                    <strong id="type-code">WEPL</strong>
+                    <small id="type-full">Warm Everyday Puppy Large</small>
+                    <h3 id="type-name">포근한 밀크 브라운 타입</h3>
+
+                    <div id="result-palette" class="result-palette">
+                      <i style="--palette:#ff9cab"></i>
+                      <i style="--palette:#ffc69e"></i>
+                      <i style="--palette:#ffe290"></i>
+                      <i style="--palette:#abe686"></i>
+                    </div>
+                  </article>
+
+                  <div class="result-axis-panel">
+                    <div class="result-axis-row">
+                      <b>Warm</b>
+                      <div class="result-axis warm"><span id="axis-wc"></span></div>
+                      <b>Cool</b>
+                    </div>
+                    <div class="result-axis-row">
+                      <b>Everyday</b>
+                      <div class="result-axis everyday"><span id="axis-eu"></span></div>
+                      <b>Unique</b>
+                    </div>
+                    <div class="result-axis-row">
+                      <b>Puppy</b>
+                      <div class="result-axis puppy"><span id="axis-pk"></span></div>
+                      <b>Kitty</b>
+                    </div>
+                    <div class="result-axis-row">
+                      <b>Large</b>
+                      <div class="result-axis size"><span id="axis-lm"></span></div>
+                      <b>Medium</b>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="result-products" aria-labelledby="recommend-title">
+                <div class="result-recommend-heading">
+                  <h2 id="recommend-title">추천 렌즈</h2>
+                  <p id="type-description">
+                    부담 없는 확대감과 따뜻한 컬러가 어우러진 데일리 렌즈가 잘 어울려요.
+                  </p>
+                </div>
+
+                <div id="result-product-grid" class="result-product-grid">
+                  <article class="result-product-card" data-lens-id="lens-01">
+                    <span class="result-best-label">BEST</span>
+                    <div class="result-product-image-placeholder">
+                      <span>LENS IMAGE</span>
+                    </div>
+                    <h3>젬아워 디오네 소프트 브라운</h3>
+                    <p>따뜻한 인상을 살리는 자연스럽고 맑은 브라운</p>
+                    <div class="result-product-meta">
+                      <span>14.2mm</span><span>KRW 25,000</span>
+                    </div>
+                    <div class="result-product-actions">
+                      <button class="result-try-button" type="button" data-lens-name="디오네 소프트 브라운">
+                        ✦ 가상 착용
+                      </button>
+                      <button class="result-detail-button" type="button">상세 보기</button>
+                    </div>
+                  </article>
+
+                  <article class="result-product-card" data-lens-id="lens-02">
+                    <div class="result-product-image-placeholder">
+                      <span>LENS IMAGE</span>
+                    </div>
+                    <h3>마이피프 피픈 브리니 베이지</h3>
+                    <p>반짝이는 글리터와 부드러운 베이지 컬러의 조화</p>
+                    <div class="result-product-meta">
+                      <span>14.0mm</span><span>KRW 28,000</span>
+                    </div>
+                    <div class="result-product-actions">
+                      <button class="result-try-button" type="button" data-lens-name="피픈 브리니 베이지">
+                        ✦ 가상 착용
+                      </button>
+                      <button class="result-detail-button" type="button">상세 보기</button>
+                    </div>
+                  </article>
+
+                  <article class="result-product-card" data-lens-id="lens-03">
+                    <div class="result-product-image-placeholder">
+                      <span>LENS IMAGE</span>
+                    </div>
+                    <h3>츄렌즈 밀크앤티 크림모카</h3>
+                    <p>데일리로 착용하기 좋은 차분한 밀크 브라운</p>
+                    <div class="result-product-meta">
+                      <span>13.8mm</span><span>KRW 22,000</span>
+                    </div>
+                    <div class="result-product-actions">
+                      <button class="result-try-button" type="button" data-lens-name="밀크앤티 크림모카">
+                        ✦ 가상 착용
+                      </button>
+                      <button class="result-detail-button" type="button">상세 보기</button>
+                    </div>
+                  </article>
+                </div>
+              </section>
+            </section>
+          </div>
+
+          <!-- 가상 착용 -->
+          <section class="result-tryon-card glass-card">
+            <div class="result-tryon-heading">
+              <div>
+                <p>VIRTUAL TRY-ON</p>
+                <div class="result-tryon-title-line">
+                  <h2>가상 착용</h2>
+                  <span>추천 렌즈의 가상 착용 버튼을 누르면 결과가 여기에 표시됩니다.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="result-tryon-layout">
+              <section class="result-tryon-control">
+                <div class="result-tryon-step">
+                  <span>01</span>
+                  <div>
+                    <h3>눈 이미지를 준비해 주세요</h3>
+                    <p>정면에서 촬영한 선명한 사진을 사용하면 더욱 정확한 분석 결과를 확인할 수 있어요.</p>
+                  </div>
+                </div>
+
+                <button id="tryon-camera-button" class="result-upload-option" type="button">
+                <img
+                  src="./assets/iris-camera-icon.png"
+                  alt=""
+                  class="iris-button-image"
+                />
+                  <div><strong>카메라로 촬영하기</strong><small>기기의 카메라로 눈 사진을 촬영해요</small></div>
+                  <b>›</b>
+                </button>
+
+                <button id="tryon-upload-button" class="result-upload-option upload" type="button">
+                <img
+                  src="./assets/iris-upload-icon.png"
+                  alt=""
+                  class="iris-button-image"
+                />
+                  <div><strong>이미지 업로드하기</strong><small>저장된 눈 사진을 불러와요</small></div>
+                  <b>›</b>
+                </button>
+
+                <input id="tryon-camera-input" type="file" accept="image/*" capture="user" hidden />
+                <input id="tryon-file-input" type="file" accept="image/*" hidden />
+
+                <p id="tryon-file-status" class="result-file-status">○ 아직 선택된 이미지가 없어요.</p>
+
+                <button id="tryon-analyze-button" class="result-tryon-analyze" type="button" disabled>
+                  홍채 이미지 분석하기 <b>›</b>
+                </button>
+              </section>
+
+              <section class="result-tryon-preview-wrap">
+                <div class="result-tryon-preview">
+                  <span class="result-preview-label">기존 사진</span>
+                  <img id="tryon-original-image" alt="가상 착용 원본 이미지" hidden />
+                  <p id="tryon-original-placeholder">카메라로 촬영하거나<br />이미지를 업로드해 주세요.</p>
+                </div>
+
+                <span class="result-tryon-arrow">›</span>
+
+                <div class="result-tryon-preview">
+                  <span class="result-preview-label active">가상 착용 결과</span>
+                  <img id="tryon-result-image" alt="가상 착용 결과 이미지" hidden />
+                  <p id="tryon-result-placeholder">가상 착용을 원하는 제품을<br />선택해 주세요.</p>
+                </div>
+              </section>
             </div>
           </section>
-        </section>
 
-        <div class="result-actions">
-          <button id="restart-test" class="result-action-button" type="button">↻ 처음부터 다시 하기</button>
-          <button class="result-action-button" data-page="quiz">✦ 다른 스타일 테스트하기</button>
-        </div>
+          <div class="result-bottom-actions">
+            <button id="restart-test" class="result-retest-button" type="button">
+              ✦ 다른 스타일 테스트하기
+            </button>
+            <button id="save-result-image" class="result-save-button" type="button">
+              <strong>결과 저장</strong>
+              <small>이미지로 저장하기</small>
+            </button>
+          </div>
+        </section>
       </section>
+
     </main>
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="./js/script.js"></script>
+  <script src="./js/iris.js"></script>
   <script src="./js/result.js"></script>
+  <script src="./js/ai-bridge.js"></script>
 </body>
 </html>

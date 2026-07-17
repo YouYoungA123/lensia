@@ -2,6 +2,7 @@ const pages = {
   home: document.querySelector('#home-page'),
   intro: document.querySelector('#intro-page'),
   quiz: document.querySelector('#quiz-page'),
+  iris: document.querySelector("#iris-page"),
   result: document.querySelector('#result-page'),
 };
 
@@ -101,23 +102,6 @@ const navLinks = document.querySelectorAll('.nav-link[data-page]');
 const pageButtons = document.querySelectorAll('[data-page]');
 const toast = document.querySelector('#toast');
 const introNavLink = document.querySelector('.nav-link[data-intro="main"]');
-const aiUploadForm = document.querySelector('#ai-upload-form');
-const aiStatus = document.querySelector('#ai-status');
-const aiPreviewImage = document.querySelector('#ai-preview-image');
-const aiSwatches = document.querySelector('#ai-swatches');
-const aiSummary = document.querySelector('#ai-summary');
-const aiAnalyzeButton = document.querySelector('#ai-analyze-button');
-const aiImageInput = document.querySelector('#ai-image-input');
-const cameraPreview = document.querySelector('#camera-preview');
-const cameraCanvas = document.querySelector('#camera-canvas');
-const cameraStartButton = document.querySelector('#camera-start');
-const cameraCaptureButton = document.querySelector('#camera-capture');
-const tryonResultPanel = document.querySelector('#tryon-result-panel');
-const tryonResultImage = document.querySelector('#tryon-result-image');
-const tryonAnnotatedImage = document.querySelector('#tryon-annotated-image');
-const tryonHelp = document.querySelector('#tryon-help');
-window.lensiaImageAnalysis = null;
-let cameraStream = null;
 
 const questions = [
   /* A. W / C : Warm vs Cool */
@@ -743,8 +727,16 @@ function showPage(name) {
 
   pages[name]?.classList.add('active-page');
 
+  const activeNavPage =
+  name === "iris"
+    ? "quiz"
+    : name;
+
   navLinks.forEach((link) => {
-    link.classList.toggle('active', link.dataset.page === name);
+    link.classList.toggle(
+      "active",
+      link.dataset.page === activeNavPage
+    );
   });
 
   introNavLink?.classList.toggle('active', name === 'intro');
@@ -759,6 +751,8 @@ function showPage(name) {
 
   history.replaceState(null, '', `#${name}`);
 }
+
+window.showPage = showPage;
 
 function showToast(message) {
   toast.textContent = message;
@@ -799,7 +793,10 @@ function renderQuestion() {
   const nextButton = document.querySelector('#next-question');
   prevButton.disabled = currentQuestion === 0;
   nextButton.disabled = !answers[question.id];
-  nextButton.textContent = currentQuestion === questions.length - 1 ? '결과 보기' : '다음';
+  nextButton.textContent =
+  currentQuestion === questions.length - 1
+  ? '다음 단계'
+  : '다음';
 }
 
 function calculateScores() {
@@ -835,106 +832,20 @@ function pickType(scores, leftType, rightType, defaultType) {
 }
 
 function getTypeCode() {
+  const answeredCount = Object.keys(answers).length;
+
+  if (answeredCount === 0) {
+    return "WEPL";
+  }
+
   const scores = calculateScores();
 
-  const wc = pickType(scores, 'W', 'C', 'W');
-  const eu = pickType(scores, 'E', 'U', 'E');
-  const pk = pickType(scores, 'P', 'K', 'P');
-  const lm = pickType(scores, 'L', 'M', 'M');
+  const wc = pickType(scores, "W", "C", "W");
+  const eu = pickType(scores, "E", "U", "E");
+  const pk = pickType(scores, "P", "K", "P");
+  const lm = pickType(scores, "L", "M", "M");
 
   return `${wc}${eu}${pk}${lm}`;
-}
-
-function codeFromImageAnalysis(result) {
-  const hint = result?.analysis?.lpti_hint;
-  if (!hint) return null;
-  const wc = hint.warm_cool === 'Cool' ? 'C' : 'W';
-  const eu = hint.everyday_unique === 'Unique' ? 'U' : 'E';
-  const pk = hint.puppy_kitty === 'Kitty' ? 'K' : 'P';
-  const lm = hint.large_medium === 'Large' ? 'L' : 'M';
-  return `${wc}${eu}${pk}${lm}`;
-}
-
-function getDisplayTypeCode() {
-  return codeFromImageAnalysis(window.lensiaImageAnalysis) || getTypeCode();
-}
-
-function updateAiPanel(result) {
-  const analysis = result.analysis;
-  const skin = analysis.color_features.skin;
-  const iris = analysis.color_features.iris;
-  const artifacts = result.artifacts;
-  const lensColor = document.querySelector('[name="lens_color"]')?.value || '#8B5E3C';
-
-  if (artifacts.tryon_preview_url) {
-    const tryonUrl = `${artifacts.tryon_preview_url}?t=${Date.now()}`;
-    aiPreviewImage.src = tryonUrl;
-    aiPreviewImage.alt = '가상 렌즈 시착 이미지';
-    if (tryonResultImage) tryonResultImage.src = tryonUrl;
-  }
-
-  if (artifacts.annotated_image_url && tryonAnnotatedImage) {
-    tryonAnnotatedImage.src = `${artifacts.annotated_image_url}?t=${Date.now()}`;
-  }
-
-  if (tryonHelp) {
-    tryonHelp.textContent = `${lensColor} 색상으로 가상 착용 이미지를 생성했습니다.`;
-  }
-
-  aiSwatches.innerHTML = [
-    { label: 'SKIN', color: analysis.skinColor },
-    { label: 'IRIS', color: analysis.irisColor },
-    { label: 'LENS', color: lensColor },
-    { label: 'TONE', color: analysis.irisColor },
-  ].map((item) => `
-    <span style="--sw:${item.color}">${item.label}<br>${item.color.replace('#', '')}</span>
-  `).join('');
-
-  aiSummary.innerHTML = `
-    <b>${analysis.lpti_hint.code}</b>
-    <span>피부: ${analysis.skinColor} / ${analysis.skinTone}</span>
-    <span>홍채: ${analysis.irisColor} / ${analysis.irisTone}</span>
-    <span>눈·얼굴 비율: ${(analysis.average_eye_to_face_width_ratio * 100).toFixed(2)}%</span>
-    <span>피부 HSV: H ${skin.hsv.h}, S ${skin.hsv.s}, V ${skin.hsv.v}</span>
-    <span>홍채 HSV: H ${iris.hsv.h}, S ${iris.hsv.s}, V ${iris.hsv.v}</span>
-  `;
-}
-
-async function analyzeCurrentImage() {
-  const formData = new FormData(aiUploadForm);
-  if (!formData.get('image')?.name) {
-    showToast('사진 업로드 또는 카메라 촬영을 먼저 해주세요.');
-    showPage('result');
-    aiImageInput?.focus();
-    return;
-  }
-
-  aiAnalyzeButton.disabled = true;
-  aiStatus.classList.remove('error');
-  aiStatus.textContent = 'AI 이미지 분석 중입니다...';
-
-  try {
-    const response = await fetch('/api/analyze', {
-      method: 'POST',
-      body: formData,
-    });
-    const data = await response.json();
-    if (!response.ok || !data.ok) {
-      throw new Error(data.error || '분석에 실패했습니다.');
-    }
-
-    window.lensiaImageAnalysis = data.result;
-    updateAiPanel(window.lensiaImageAnalysis);
-    updateResult();
-    aiStatus.textContent = '분석 완료. 결과 화면에 반영되었습니다.';
-    showToast('AI 이미지 분석 완료');
-  } catch (error) {
-    aiStatus.textContent = error.message;
-    aiStatus.classList.add('error');
-    showToast('AI 분석 실패');
-  } finally {
-    aiAnalyzeButton.disabled = false;
-  }
 }
 
 pageButtons.forEach((button) => {
@@ -960,7 +871,7 @@ document.querySelector('#next-question')?.addEventListener('click', () => {
     currentQuestion += 1;
     renderQuestion();
   } else {
-    showPage('result');
+    showPage('iris');
   }
 });
 
@@ -971,69 +882,8 @@ document.querySelector('#restart-test')?.addEventListener('click', () => {
 });
 
 document.querySelector('.save-button')?.addEventListener('click', () => showToast('QR 결과 저장 기능을 연결할 자리예요.'));
-document.querySelectorAll('.try-button').forEach((button) => button.addEventListener('click', async () => {
-  const lensColorInput = document.querySelector('[name="lens_color"]');
-  if (button.dataset.lensColor && lensColorInput) {
-    lensColorInput.value = button.dataset.lensColor;
-  }
-  showPage('result');
-  await analyzeCurrentImage();
-  tryonResultPanel?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-}));
+document.querySelectorAll('.try-button').forEach((button) => button.addEventListener('click', () => showToast('가상 착용 카메라 기능을 연결할 자리예요.')));
 document.querySelectorAll('.detail-button').forEach((button) => button.addEventListener('click', () => showToast('제품 상세 페이지를 연결할 자리예요.')));
-
-if (aiUploadForm) {
-  aiUploadForm.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    await analyzeCurrentImage();
-  });
-}
-
-if (cameraStartButton && cameraPreview) {
-  cameraStartButton.addEventListener('click', async () => {
-    try {
-      cameraStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } },
-        audio: false,
-      });
-      cameraPreview.srcObject = cameraStream;
-      cameraPreview.classList.add('active');
-      cameraCaptureButton.disabled = false;
-      aiStatus.classList.remove('error');
-      aiStatus.textContent = '카메라가 켜졌습니다. 얼굴을 맞춘 뒤 촬영해서 사용을 눌러주세요.';
-    } catch (error) {
-      aiStatus.textContent = '카메라 권한을 허용해야 촬영할 수 있습니다.';
-      aiStatus.classList.add('error');
-      showToast('카메라를 열 수 없습니다');
-    }
-  });
-}
-
-if (cameraCaptureButton && cameraCanvas && aiImageInput) {
-  cameraCaptureButton.addEventListener('click', async () => {
-    if (!cameraPreview.videoWidth || !cameraPreview.videoHeight) {
-      showToast('카메라 화면이 준비되지 않았어요.');
-      return;
-    }
-    cameraCanvas.width = cameraPreview.videoWidth;
-    cameraCanvas.height = cameraPreview.videoHeight;
-    const context = cameraCanvas.getContext('2d');
-    context.drawImage(cameraPreview, 0, 0, cameraCanvas.width, cameraCanvas.height);
-    cameraCanvas.toBlob(async (blob) => {
-      if (!blob) {
-        showToast('촬영 이미지를 만들지 못했습니다.');
-        return;
-      }
-      const file = new File([blob], `camera-${Date.now()}.jpg`, { type: 'image/jpeg' });
-      const transfer = new DataTransfer();
-      transfer.items.add(file);
-      aiImageInput.files = transfer.files;
-      aiStatus.classList.remove('error');
-      aiStatus.textContent = '촬영 사진이 선택되었습니다. 분석을 시작합니다.';
-      await analyzeCurrentImage();
-    }, 'image/jpeg', 0.92);
-  });
-}
 
 const initialPage = location.hash.replace('#', '');
 
@@ -1041,7 +891,7 @@ if (initialPage === 'intro') {
   openIntroPage('main');
 } else {
   showPage(
-    ['home', 'quiz', 'result'].includes(initialPage)
+    ['home', 'quiz', 'iris', 'result'].includes(initialPage)
       ? initialPage
       : 'home'
   );

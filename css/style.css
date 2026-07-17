@@ -369,6 +369,8 @@ from {
   box-shadow: 0 22px 35px rgba(94, 84, 187, 0.3);}
 
 .cta>span,
+
+
 .cta>b {font-size: 34px;}
 
 .cta div {display: flex;
@@ -416,13 +418,19 @@ from {
   font-size: 38px;}
 
 .ghost-button,
+
+
 .secondary-button,
+
+
 .primary-button {border-radius: 50px;
   padding: 14px 24px;
   font-weight: 800;
   cursor: pointer;}
 
 .ghost-button,
+
+
 .secondary-button {border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.74);
   color: #5d5964;}
@@ -742,6 +750,8 @@ body {color: var(--ink);
 /* 3. 공통 글래스 카드 */
 
 .glass-card,
+
+
 .question-card {background: rgba(255, 255, 255, 0.42);
   border: 1px solid rgba(255, 255, 255, 0.76);
   box-shadow: var(--shadow);
@@ -908,6 +918,8 @@ body {color: var(--ink);
 /* 8. 버튼류 */
 
 .cta,
+
+
 .primary-button {color: white;
   background:
     linear-gradient(135deg, #ff9fd9 0%, #b894ff 50%, #8ed8ff 100%);
@@ -919,10 +931,14 @@ body {color: var(--ink);
   min-height: 88px;}
 
 .cta:hover,
+
+
 .primary-button:hover {transform: translateY(-2px);
   filter: brightness(1.04);}
 
 .ghost-button,
+
+
 .secondary-button {color: #444444;
   background: rgba(255, 255, 255, 0.5);
   border: 1px solid rgba(255,255,255,0.78);
@@ -936,6 +952,8 @@ body {color: var(--ink);
 .quiz-shell {border-radius: 38px;}
 
 .quiz-header h1,
+
+
 .question-card h2 {color: #302a5f;
   font-weight: 900;}
 
@@ -1263,6 +1281,8 @@ body {color: var(--ink);
     0 0 60px rgba(178, 197, 255, 0.34);}
 
 .eye-preview::before,
+
+
 .eye-preview::after {content: "";
   position: absolute;
   border-radius: 50%;
@@ -1463,14 +1483,22 @@ body {color: var(--ink);
 button:focus-visible {outline-color: rgba(111, 106, 168, 0.25);}
 
 .glass-card,
+
+
 .question-card,
+
+
 .topbar,
+
+
 .home-feature-card {border-color: rgba(255, 255, 255, 0.78);
   box-shadow: var(--shadow);}
 
 .nav-link {color: #666666;}
 
 .nav-link:hover,
+
+
 .nav-link.active {color: var(--primary-deep);}
 
 .nav-link.active {background: rgba(255, 255, 255, 0.62);
@@ -1479,30 +1507,48 @@ button:focus-visible {outline-color: rgba(111, 106, 168, 0.25);}
     inset 0 1px 0 rgba(255, 255, 255, 0.76);}
 
 .hero,
+
+
 .home-hero {background:
     radial-gradient(circle at 18% 34%, rgba(255, 230, 255, 0.58), transparent 35%),
     radial-gradient(circle at 82% 34%, rgba(226, 239, 250, 0.68), transparent 38%),
     linear-gradient(135deg, rgba(255,255,255,0.42), rgba(255,255,255,0.2));}
 
 .eyebrow,
+
+
 .hero-kicker {color: #666666;}
 
 .hero h1,
+
+
 .hero-title {color: #666666;
   text-shadow:
     0 0 22px rgba(255, 230, 255, 0.58),
     0 7px 18px rgba(93, 94, 138, 0.08);}
 
 .hero-description,
+
+
 .hero-desc {color: #666666;}
 
 .feature-card h2,
+
+
 .home-feature-card h2,
+
+
 .quiz-header h1,
+
+
 .question-card h2 {color: #45466b;}
 
 .feature-card p,
+
+
 .home-feature-card p,
+
+
 .question-description {color: #747899;}
 
 .feature-image-box {width: 130px;
@@ -1522,17 +1568,31 @@ button:focus-visible {outline-color: rgba(111, 106, 168, 0.25);}
   border-radius: 0;}
 
 .feature-icon,
+
+
 .feature-symbol,
+
+
 .quiz-icon,
+
+
 .ar-icon,
+
+
 .question-kicker {color: #7974b3;}
 
 .feature-icon,
+
+
 .feature-symbol,
+
+
 .answer-card span {background:
     linear-gradient(145deg, rgba(255,255,255,0.86), rgba(240,236,250,0.68));}
 
 .cta,
+
+
 .primary-button {color: white;
   background:
     linear-gradient(135deg, #b8d8f2 0%, #c9c5e8 50%, #e5b9ea 100%);
@@ -1541,6 +1601,8 @@ button:focus-visible {outline-color: rgba(111, 106, 168, 0.25);}
     inset 0 1px 0 rgba(255,255,255,0.42);}
 
 .ghost-button,
+
+
 .secondary-button {color: #64658f;
   border-color: rgba(111, 106, 168, 0.14);}
 
@@ -1584,210 +1646,6 @@ button:focus-visible {outline-color: rgba(111, 106, 168, 0.25);}
 .result-card-button .result-card {width: 100%;
   display: block;}
 
-.intro-page-card {position: relative;
-  padding-top: 36px;
-  min-height: 720px;
-  padding: 72px 84px;
-  border-radius: 42px;}
-
-.intro-heading {margin-top: 0px;}
-
-.intro-back-button {position: absolute;
-  top: 64px;
-  left: 84px;
-  transform: none;
-  width: 92px;
-  height: 46px;
-  padding: 0;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  box-sizing: border-box;
-  border: 1px solid transparent;
-  border-radius: 999px;
-
-  color: var(--text-secondary);
-  background: rgba(255, 255, 255, 0.42);
-
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1;
-
-  box-shadow:
-    0 8px 20px rgba(111, 106, 168, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.48);
-
-  cursor: pointer;
-
-  transition:
-    color 0.22s ease,
-    background-color 0.22s ease,
-    border-color 0.22s ease,
-    box-shadow 0.22s ease,
-    transform 0.22s ease;}
-
-.intro-back-button:hover {color: var(--text-accent);
-  background: rgba(255, 255, 255, 0.82);
-  border-color: rgba(255, 255, 255, 0.94);
-
-  box-shadow:
-    0 12px 26px rgba(111, 106, 168, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.82);
-
-  transform: translateY(-2px);}
-
-.intro-heading {max-width: 900px;
-  margin: 54px auto 48px;
-  text-align: center;}
-
-#intro-badge {display: inline-block;
-  padding: 8px 16px;
-  border-radius: 999px;
-  color: #6f6aa8;
-  background: rgba(255, 255, 255, 0.64);
-  font-weight: 800;}
-
-#intro-eyebrow {margin: 20px 0 10px;
-  color: #8582b5;
-  font-weight: 800;
-  letter-spacing: 3px;}
-
-#intro-title {margin: 0;
-  color: #54527e;
-  font-size: clamp(40px, 4vw, 64px);
-  line-height: 1.25;}
-
-#intro-description {color: #747899;
-  font-size: 20px;
-  line-height: 1.7;}
-
-.intro-content {max-width: 1120px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 430px 1fr;
-  align-items: center;
-  gap: 100px;}
-
-.intro-visual {display: flex;
-  align-items: center;
-  justify-content: center;
-  transform: translateX(-40px);
-  background: transparent;
-  box-shadow: none;
-  padding: 0;
-  overflow: visible;}
-
-.intro-visual img {display: block;
-  width: 120%;
-  height: 100%;
-  object-fit: contain;
-  transform: translate(30px, 0);
-  border-radius: 32px;
-  filter:
-    drop-shadow(0 18px 36px rgba(111, 106, 168, 0.16));}
-
-.intro-detail h2 {margin: 0 0 18px;
-  color: #45466b;
-  font-size: 34px;}
-
-.intro-detail p {color: #747899;
-  font-size: 19px;
-  line-height: 1.8;}
-
-.intro-keywords {display: flex;
-  flex-wrap: nowrap;
-  gap: 10px;
-  margin-top: 28px;}
-
-.intro-keywords span {padding: 10px 16px;
-  border-radius: 999px;
-  color: #676a92;
-  background: rgba(255, 255, 255, 0.62);
-  border: 1px solid rgba(255, 255, 255, 0.82);
-  font-weight: 700;
-  white-space: nowrap;}
-
-.intro-keyword-button {padding: 9px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.82);
-  border-radius: 999px;
-
-  color: #676a92;
-  background: rgba(255, 255, 255, 0.62);
-
-  font: inherit;
-  font-size: 14px;
-  font-weight: 700;
-  white-space: nowrap;
-
-  cursor: pointer;
-  transition:
-    transform 0.2s ease,
-    background 0.2s ease,
-    box-shadow 0.2s ease;}
-
-.intro-keyword-button:hover {transform: translateY(-2px);
-  background: rgba(255, 255, 255, 0.82);
-  box-shadow:
-    0 8px 18px rgba(111, 106, 168, 0.14);}
-
-.intro-test-button {width: 320px;
-  min-height: 72px;
-  margin: 60px auto 0;
-  border: 0;
-  border-radius: 999px;
-  display: block;
-
-  color: white;
-  font-size: 21px;
-  font-weight: 800;
-
-  background:
-    linear-gradient(
-      135deg,
-      #b8d8f2 0%,
-      #cbc5e9 50%,
-      #e5b9ea 100%
-    );
-
-  cursor: pointer;
-  box-shadow:
-    0 16px 36px rgba(111, 106, 168, 0.2);}
-
-.intro-test-button.cta {width: 420px;
-  min-height: 78px;
-  margin: 56px auto 0;
-  padding: 0 28px;
-  border-radius: 999px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;}
-
-.intro-test-button.cta > span {font-size: 28px;
-  font-weight: 400;}
-
-.intro-test-button.cta > b {font-size: 32px;
-  font-weight: 600;
-  line-height: 1;}
-
-.intro-test-button.cta > strong {font-size: 23px;
-  font-weight: 600;}
-
-@media (max-width: 920px) {
-.intro-page-card {padding: 46px 26px;}
-
-.intro-content {grid-template-columns: 1fr;}
-
-.intro-visual {width: min(320px, 100%);
-    margin: 0 auto;}
-
-.intro-detail {text-align: center;}
-
-.intro-keywords {justify-content: center;}
-}
-
 /* =========================================================
    LENSIA Unified Typography Color System
    텍스트 컬러만 용도별로 통일한 최종 오버라이드
@@ -1815,21 +1673,29 @@ body {color: var(--text-primary);}
 .nav-link {color: var(--text-primary);}
 
 .nav-link:hover,
+
+
 .nav-link.active {color: var(--text-accent);}
 
 /* 홈 화면: 작은 영문 라벨 */
 
 .hero-kicker,
+
+
 .eyebrow {color: var(--text-accent);}
 
 /* 홈 화면: 메인 제목 */
 
 .hero-title,
+
+
 .hero h1 {color: var(--text-primary);}
 
 /* 홈 화면: 설명 */
 
 .hero-desc,
+
+
 .hero-description {color: var(--text-secondary);}
 
 /* 홈 화면: 시작 버튼 */
@@ -1839,14 +1705,24 @@ body {color: var(--text-primary);}
 /* 기능 카드 */
 
 .feature-card h2,
+
+
 .home-feature-card h2 {color: var(--text-primary);}
 
 .feature-card p,
+
+
 .home-feature-card p {color: var(--text-secondary);}
 
 .feature-icon,
+
+
 .feature-symbol,
+
+
 .quiz-icon,
+
+
 .ar-icon {color: var(--text-accent);}
 
 /* 하단 안내 */
@@ -1860,9 +1736,13 @@ body {color: var(--text-primary);}
 /* 테스트 페이지 제목 */
 
 .quiz-header h1,
+
+
 .question-card h2 {color: var(--text-primary);}
 
 .question-kicker,
+
+
 .progress-meta {color: var(--text-accent);}
 
 .question-description {color: var(--text-secondary);}
@@ -1878,46 +1758,24 @@ body {color: var(--text-primary);}
 /* 보조 버튼 */
 
 .ghost-button,
+
+
 .secondary-button {color: var(--text-primary);}
 
 /* 메인 그라데이션 버튼 */
 
 .cta,
-.primary-button,
-.intro-test-button {color: var(--text-on-color);}
+
+
+.primary-button {color: var(--text-on-color);}
 
 /* CTA 내부 텍스트 */
 
 .cta strong,
+
+
 .cta small {color: var(--text-on-color);}
 
-/* 결과 페이지: 섹션 제목 */
-
-/* 홍채 분석 */
-
-/* LPTI 결과 카드 */
-
-/* 축 라벨 */
-
-/* 추천 렌즈 */
-
-/* 저장 버튼 작은 설명 */
-
-/* 소개 페이지 */
-
-.intro-back-button {color: var(--text-secondary);}
-
-#intro-badge {color: var(--text-accent);}
-
-#intro-eyebrow {color: var(--text-accent);}
-
-#intro-title,
-.intro-detail h2 {color: var(--text-primary);}
-
-#intro-description,
-.intro-detail p {color: var(--text-secondary);}
-
-.intro-keywords span,
 .feature-tags span {color: var(--text-secondary);}
 
 .feature-arrow {color: var(--text-accent);}
@@ -1927,24 +1785,18 @@ body {color: var(--text-primary);}
 /* 비주얼 내부 텍스트 */
 
 .panel-label,
+
+
 .kiosk-screen {color: var(--text-soft-white);}
 
 .device small,
+
+
 .device strong {color: var(--text-accent);}
 
-/* 메인 LPTI 소개 이미지는 크게 */
-
-.intro-visual-main {width: 430px;}
-
-/* 세부 축 카드 이미지는 작게 */
-
-.intro-visual-wc,
-.intro-visual-eu,
-.intro-visual-pk,
-.intro-visual-lm {width: 280px;
-  margin-left: 120px;}
-
 .ghost-button,
+
+
 .secondary-button {transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
@@ -1952,6 +1804,8 @@ body {color: var(--text-primary);}
     color 0.2s ease;}
 
 .ghost-button:hover,
+
+
 .secondary-button:hover {transform: translateY(-2px);
   background: rgba(255, 255, 255, 0.82);
   color: #6f6aa8;
@@ -2008,6 +1862,8 @@ body {color: var(--text-primary);}
 }
 
 .result-card-row .result-card-button,
+
+
 .result-card-row .result-card {
   min-width: 0;
 }
@@ -2102,7 +1958,10 @@ body {color: var(--text-primary);}
   }
 }
 
-/* 920px 이하: 카드 4개는 한 줄 유지, 간격만 축소 */
+/* 920px 이하: 카드 4개는 한 줄 유지,
+
+
+간격만 축소 */
 @media (max-width: 920px) {
   .home-hero {
     padding: 48px 28px 58px;
@@ -2411,6 +2270,8 @@ body {color: var(--text-primary);}
 ========================================================= */
 
 .hero-desc-desktop,
+
+
 .hero-desc-mobile {
   display: block;
 }
@@ -2788,3 +2649,286 @@ body {color: var(--text-primary);}
   }
 }
 
+/* =========================================================
+   TOPBAR RESPONSIVE FINAL
+   화면이 줄어들어도 기존 상단 메뉴 유지
+========================================================= */
+
+@media (max-width: 920px) {
+  .topbar {
+    height: 78px;
+    padding: 0 22px;
+    gap: 16px;
+    flex-wrap: nowrap;
+  }
+
+  .brand {
+    flex: 0 0 auto;
+  }
+
+  .brand-logo {
+    width: 180px !important;
+  }
+
+  .nav {
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .nav-link {
+    flex: 0 0 auto;
+    padding: 10px 8px;
+    font-size: 15px;
+    white-space: nowrap;
+  }
+
+  .mobile-menu {
+    display: none !important;
+  }
+}
+
+/* =========================================================
+   TOPBAR RESPONSIVE — 540px 이하
+   로고와 메뉴 글씨가 겹치지 않도록 로고를 비율로 축소
+========================================================= */
+
+@media (max-width: 540px) {
+  .topbar {
+    height: 64px;
+    padding: 0 14px;
+    gap: 8px;
+  }
+
+  .brand-logo {
+    width: clamp(84px, 30vw, 150px) !important;
+  }
+
+  .nav {
+    gap: 4px;
+  }
+
+  .nav-link {
+    padding: 8px 6px;
+    font-size: 13px;
+  }
+}
+
+/* =========================================================
+   HOME MAIN VISUAL RESPONSIVE — FINAL TUNING
+   요청 반영:
+   1451px 이상
+   - analysis-panel을 조금 아래로 이동
+   - analysis-panel 크기 축소
+   - 하단 카드 위로 이동 + 약 1.3배 확대
+
+   1201px~1450px
+   - analysis-panel 크기 축소
+   - 카드 아래로 이동 + 크기 확대
+
+   900px~1200px
+   - analysis-panel과 카드 간격 일정하게 유지
+   - 홈 박스 세로 길이 확대
+========================================================= */
+
+/* ---------------------------------------------------------
+   1451px 이상
+--------------------------------------------------------- */
+@media (min-width: 1451px) {
+  .home-hero {
+    min-height: 680px !important;
+    padding-bottom: 96px !important;
+  }
+
+  .hero-visual {
+    height: 500px !important;
+  }
+
+  .hero-visual-collage {
+    max-width: 610px !important;
+    height: 500px !important;
+  }
+
+  /* 분석 패널: 살짝 아래 + 조금 축소 */
+  .hero-visual-collage .analysis-image {
+    width: 92% !important;
+    top: -48px !important;
+    left: 50% !important;
+    transform: translateX(-55%) !important;
+  }
+
+  /* 카드: 위로 올리고 1.3배 정도 확대 */
+  .result-card-row {
+    width: 126% !important;
+    max-width: 820px !important;
+    left: 50% !important;
+    bottom: -50px !important;
+    transform: translateX(-55%) !important;
+    gap: 18px !important;
+  }
+
+  .result-card-row .result-card-button,
+  .result-card-row .result-card {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+}
+
+/* ---------------------------------------------------------
+   1201px ~ 1450px
+--------------------------------------------------------- */
+@media (min-width: 1201px) and (max-width: 1450px) {
+  .home-hero {
+    min-height: 660px !important;
+    padding: 64px 54px 88px !important;
+  }
+
+  .hero-visual {
+    height: 470px !important;
+  }
+
+  .hero-visual-collage {
+    max-width: 560px !important;
+    height: 470px !important;
+  }
+
+  /* 분석 패널 축소 */
+  .hero-visual-collage .analysis-image {
+    width: 90% !important;
+    top: -18px !important;
+    left: 45% !important;
+    transform: translateX(-50%) !important;
+  }
+
+  /* 카드: 위로 올리고 1.3배 정도 확대 */
+  .result-card-row {
+    width: 126% !important;
+    max-width: 820px !important;
+    left: 50% !important;
+    bottom: -50px !important;
+    transform: translateX(-55%) !important;
+    gap: 18px !important;
+  }
+
+  .result-card-row .result-card-button,
+  .result-card-row .result-card {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+}
+
+/* ---------------------------------------------------------
+   761px ~ 1200px
+   카드가 작아지는 비율에 맞춰 홈 박스 높이도 연속적으로 축소
+--------------------------------------------------------- */
+@media (min-width: 761px) and (max-width: 1200px) {
+  .home-hero {
+    position: relative !important;
+
+    min-height: clamp(
+      680px,
+      calc(31.89vw + 437.3px),
+      820px
+    ) !important;
+
+    padding:
+      clamp(46px, calc(2.73vw + 25.2px), 58px)
+      clamp(34px, calc(2.73vw + 13.2px), 46px)
+      clamp(130px, calc(27.33vw - 78px), 250px)
+      !important;
+  }
+
+  .hero-visual,
+  .hero-visual-collage {
+    position: static !important;
+  }
+
+  .hero-visual-collage .analysis-image {
+    position: absolute !important;
+
+    /*
+      761px에서 130px,
+      1200px에서 150px 사이로 자연스럽게 이동.
+    */
+    top: clamp(
+      130px,
+      calc(4.56vw + 95.3px),
+      150px
+    ) !important;
+
+    right: clamp(
+      38px,
+      calc(1.82vw + 24.2px),
+      46px
+    ) !important;
+
+    left: auto !important;
+
+    /*
+      화면이 줄어들수록 분석 이미지도 함께 축소.
+      기존 42~43% 흐름을 유지.
+    */
+    width: clamp(
+      390px,
+      43vw,
+      470px
+    ) !important;
+
+    max-width: 43% !important;
+    height: auto !important;
+    transform: translateX(-10%) !important;
+  }
+
+  .result-card-row {
+    position: absolute !important;
+
+    left: clamp(
+      38px,
+      calc(1.82vw + 24.2px),
+      46px
+    ) !important;
+
+    right: clamp(
+      38px,
+      calc(1.82vw + 24.2px),
+      46px
+    ) !important;
+
+    /*
+      카드 아래 여백도 42px → 52px 사이에서만 변함.
+      카드 자체는 기존처럼 화면 폭에 따라 계속 작아짐.
+    */
+    bottom: clamp(
+      58px,
+      calc(2.28vw + 24.6px),
+      68px
+    ) !important;
+
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    transform: none !important;
+
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    align-items: stretch !important;
+
+    /*
+      카드 사이 간격도 12px → 16px 사이에서 부드럽게 축소.
+    */
+    gap: clamp(
+      12px,
+      calc(0.91vw + 5.1px),
+      16px
+    ) !important;
+  }
+
+  .result-card-row .result-card-button,
+  .result-card-row .result-card {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+}
