@@ -1,0 +1,515 @@
+/* =========================================================
+   LENSIA 결과 이미지 저장 전용 CSS
+   파일 위치: export/result-export.css
+========================================================= */
+
+.lensia-export-stage {
+  position: fixed;
+  left: -100000px;
+  top: 0;
+  width: 1400px;
+  min-height: 1px;
+  z-index: -99999;
+  overflow: visible;
+  pointer-events: none;
+  opacity: 1;
+}
+
+.lensia-export-mode {
+  box-sizing: border-box;
+  width: 1400px !important;
+  min-width: 1400px !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 54px !important;
+
+  display: grid !important;
+  gap: 24px !important;
+
+  color: #595959;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(226, 239, 250, 0.95), transparent 31%),
+    radial-gradient(circle at 88% 14%, rgba(241, 240, 250, 0.98), transparent 34%),
+    linear-gradient(145deg, #f9fbfd 0%, #f7f7fb 52%, #fbf8fc 100%) !important;
+
+  font-family:
+    Pretendard,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif !important;
+}
+
+.lensia-export-mode,
+.lensia-export-mode *,
+.lensia-export-mode *::before,
+.lensia-export-mode *::after {
+  box-sizing: border-box;
+}
+
+/* 상단 결과 영역 */
+.lensia-export-mode .result-upper {
+  display: grid !important;
+  grid-template-columns:
+    minmax(300px, 0.7fr)
+    minmax(0, 1.75fr) !important;
+  gap: 18px !important;
+  align-items: stretch !important;
+}
+
+.lensia-export-mode .result-main-column {
+  display: grid !important;
+  gap: 16px !important;
+  min-width: 0 !important;
+}
+
+.lensia-export-mode .result-lpti-content {
+  display: grid !important;
+  grid-template-columns:
+    180px
+    250px
+    minmax(320px, 1fr) !important;
+  gap: 20px !important;
+  align-items: center !important;
+  overflow: visible !important;
+}
+
+.lensia-export-mode .result-product-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+}
+
+
+.lensia-export-mode .result-character-image {
+  transform: translateX(-25px) !important;
+}
+
+
+/* 캐릭터 잘림 방지 */
+.lensia-export-mode .result-character-wrap,
+.lensia-export-mode .result-character-area,
+.lensia-export-mode .result-character {
+  width: 180px !important;
+  min-width: 180px !important;
+  max-width: 180px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: visible !important;
+}
+
+.lensia-export-mode .result-character-image {
+  display: block !important;
+  width: auto !important;
+  height: 270px !important;
+  max-width: 180px !important;
+  max-height: 280px !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  transform: none !important;
+  translate: none !important;
+  overflow: visible !important;
+}
+
+/* =========================================================
+   가상 착용 저장 레이아웃
+   - 조작 패널 제거
+   - 기존 사진 / 화살표 / 결과 사진만 표시
+   - 사진 영역을 카드 전체 폭으로 확장
+========================================================= */
+
+/* 저장본에서는 카메라/업로드 조작 영역 전체 숨김 */
+.lensia-export-mode .result-tryon-control,
+.lensia-export-mode [data-export-tryon-control="true"] {
+  display: none !important;
+}
+
+/* 가상착용 카드 */
+.lensia-export-mode .result-tryon-card {
+  position: relative !important;
+  display: block !important;
+
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+
+  margin: 0 !important;
+  padding: 30px !important;
+
+  overflow: hidden !important;
+}
+
+/*
+ * 원본 result.css에서 result-tryon-content 또는 그 하위 래퍼에
+ * 2열 grid / 고정폭 / max-width가 남아 있어도 전부 해제합니다.
+ */
+.lensia-export-mode .result-tryon-content {
+  display: block !important;
+
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  grid-template-columns: none !important;
+  grid-template-rows: none !important;
+}
+
+/* 미리보기 래퍼를 포함한 중간 부모도 카드 전체 폭 사용 */
+.lensia-export-mode .result-tryon-content > *,
+.lensia-export-mode .result-tryon-content > div,
+.lensia-export-mode .result-tryon-preview-area,
+.lensia-export-mode .result-tryon-preview-container,
+.lensia-export-mode .result-tryon-preview-column {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+
+  flex: 1 1 100% !important;
+  flex-basis: 100% !important;
+
+  grid-column: 1 / -1 !important;
+  justify-self: stretch !important;
+}
+
+/* 기존 사진 + 화살표 + 결과 사진 */
+.lensia-export-mode .result-tryon-preview-wrap {
+  position: relative !important;
+  display: grid !important;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    52px
+    minmax(0, 1fr) !important;
+  grid-template-rows: 430px !important;
+
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: none !important;
+  height: 430px !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  gap: 0 !important;
+  align-items: stretch !important;
+  justify-items: stretch !important;
+  justify-content: stretch !important;
+  justify-self: stretch !important;
+
+  grid-column: 1 / -1 !important;
+
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+/* 양쪽 사진박스 */
+.lensia-export-mode .lensia-export-tryon-panel,
+.lensia-export-mode .result-tryon-preview {
+  position: relative !important;
+
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 430px !important;
+
+  margin: 0 !important;
+  padding: 24px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  align-self: stretch !important;
+  justify-self: stretch !important;
+
+  flex: none !important;
+
+  background: #f8fbfe !important;
+  background-image: none !important;
+  border: 1px dashed #d9e2ee !important;
+  border-radius: 24px !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+/* 첫 번째 / 마지막 패널을 각 열에 강제 배치 */
+.lensia-export-mode .result-tryon-preview-wrap
+  > .lensia-export-tryon-panel:first-child,
+.lensia-export-mode .result-tryon-preview-wrap
+  > .result-tryon-preview:first-child {
+  grid-column: 1 !important;
+}
+
+.lensia-export-mode .result-tryon-preview-wrap
+  > .lensia-export-tryon-panel:last-child,
+.lensia-export-mode .result-tryon-preview-wrap
+  > .result-tryon-preview:last-child {
+  grid-column: 3 !important;
+}
+
+/* 가운데 화살표 */
+.lensia-export-mode .lensia-export-tryon-arrow,
+.lensia-export-mode .result-tryon-arrow,
+.lensia-export-mode .tryon-arrow,
+.lensia-export-mode .result-preview-arrow {
+  position: relative !important;
+  z-index: 5 !important;
+
+  grid-column: 2 !important;
+
+  width: 52px !important;
+  min-width: 52px !important;
+  max-width: 52px !important;
+  height: 52px !important;
+
+  align-self: center !important;
+  justify-self: center !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  background: #ffffff !important;
+  border: 1px solid #e1e7ef !important;
+  border-radius: 50% !important;
+  box-shadow: 0 5px 14px rgba(91, 104, 123, 0.12) !important;
+
+  color: transparent !important;
+  font-size: 0 !important;
+  line-height: 1 !important;
+  overflow: visible !important;
+}
+
+.lensia-export-mode .lensia-export-tryon-arrow::after,
+.lensia-export-mode .result-tryon-arrow::after,
+.lensia-export-mode .tryon-arrow::after,
+.lensia-export-mode .result-preview-arrow::after {
+  content: "›" !important;
+  display: block !important;
+
+  color: #8da1bb !important;
+  font-size: 30px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+
+  transform: translateY(-1px) !important;
+}
+
+/* 미리보기 사진 */
+.lensia-export-mode .lensia-export-tryon-panel img,
+.lensia-export-mode .result-tryon-preview img {
+  display: block !important;
+
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+
+  object-fit: contain !important;
+  object-position: center !important;
+
+  border-radius: 18px !important;
+  visibility: visible !important;
+}
+
+/* 상단 라벨 */
+.lensia-export-mode .result-tryon-preview-label,
+.lensia-export-mode .tryon-preview-label,
+.lensia-export-mode .preview-label,
+.lensia-export-mode .lensia-export-tryon-panel > span:first-child {
+  position: absolute !important;
+  top: 16px !important;
+  left: 16px !important;
+  z-index: 3 !important;
+
+  max-width: calc(100% - 32px) !important;
+  padding: 7px 12px !important;
+
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+
+  color: #6d7787 !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+/* =========================================================
+   저장 이미지에서 제외할 요소
+========================================================= */
+
+.lensia-export-mode .result-bottom-actions,
+.lensia-export-mode #restart-test,
+.lensia-export-mode #save-result-image,
+.lensia-export-mode .result-placeholder-button,
+.lensia-export-mode .result-detail-button,
+.lensia-export-mode .result-try-button,
+.lensia-export-mode #tryon-camera-button,
+.lensia-export-mode #tryon-upload-button,
+.lensia-export-mode #tryon-analyze-button,
+.lensia-export-mode #tryon-camera-input,
+.lensia-export-mode #tryon-file-input,
+.lensia-export-mode #tryon-file-status,
+.lensia-export-mode [data-original-export-id="tryon-camera-button"],
+.lensia-export-mode [data-original-export-id="tryon-upload-button"],
+.lensia-export-mode [data-original-export-id="tryon-analyze-button"],
+.lensia-export-mode [data-original-export-id="tryon-camera-input"],
+.lensia-export-mode [data-original-export-id="tryon-file-input"],
+.lensia-export-mode [data-original-export-id="tryon-file-status"],
+.lensia-export-mode [data-export-exclude] {
+  display: none !important;
+}
+
+/* 이미지 기본 안정화 */
+.lensia-export-mode img {
+  max-width: 100%;
+}
+
+.lensia-export-mode .result-character-image,
+.lensia-export-mode .result-iris-image,
+.lensia-export-mode .result-product-image,
+.lensia-export-mode .result-tryon-preview img {
+  visibility: visible;
+}
+
+.lensia-export-mode img[hidden] {
+  display: none !important;
+}
+
+/* 일반 카드 저장 안정화 */
+.lensia-export-mode .result-iris-card,
+.lensia-export-mode .result-lpti-card,
+.lensia-export-mode .result-tryon-card,
+.lensia-export-mode .result-product-card {
+  position: relative !important;
+  background: #ffffff !important;
+  background-image: none !important;
+  border: 1px solid #edf0f5 !important;
+  border-radius: 26px !important;
+  box-shadow: 0 10px 26px rgba(98, 116, 143, 0.1) !important;
+  isolation: isolate !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+#save-result-image.is-exporting {
+  cursor: wait !important;
+  pointer-events: none !important;
+  opacity: 0.72;
+}
+
+#save-result-image.is-exporting strong::after {
+  content: " 중...";
+}
+
+/* 화살표 버튼은 가운데 고정 */
+.lensia-export-mode .result-tryon-preview-wrap {
+  position: relative !important;
+}
+
+.lensia-export-mode .lensia-export-tryon-arrow,
+.lensia-export-mode .result-tryon-arrow,
+.lensia-export-mode .tryon-arrow,
+.lensia-export-mode .result-preview-arrow {
+  position: absolute !important;
+
+  left: 50% !important;
+  top: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+
+  grid-column: auto !important;
+  grid-row: auto !important;
+
+  transform: translate(-50%, -50%) !important;
+
+  width: 52px !important;
+  height: 52px !important;
+  margin: 0 !important;
+
+  z-index: 10 !important;
+}
+
+/* 기존 내부 아이콘이나 SVG 숨기기 */
+.lensia-export-mode .lensia-export-tryon-arrow > *,
+.lensia-export-mode .result-tryon-arrow > *,
+.lensia-export-mode .tryon-arrow > *,
+.lensia-export-mode .result-preview-arrow > * {
+  display: none !important;
+}
+
+/* 가운데 화살표 */
+.lensia-export-mode .lensia-export-tryon-arrow,
+.lensia-export-mode .result-tryon-arrow,
+.lensia-export-mode .tryon-arrow,
+.lensia-export-mode .result-preview-arrow {
+  position: relative !important;
+
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+
+  align-self: center !important;
+  justify-self: center !important;
+
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: auto !important;
+
+  width: 52px !important;
+  min-width: 52px !important;
+  max-width: 52px !important;
+  height: 52px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  transform: none !important;
+
+  background: #ffffff !important;
+  border: 1px solid #e1e7ef !important;
+  border-radius: 50% !important;
+  box-shadow:
+    0 5px 14px rgba(91, 104, 123, 0.12) !important;
+
+  color: #8da1bb !important;
+  font-size: 30px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+
+  text-indent: 0 !important;
+  overflow: visible !important;
+  z-index: 10 !important;
+}
+
+.lensia-export-mode .lensia-export-tryon-arrow::after,
+.lensia-export-mode .result-tryon-arrow::after,
+.lensia-export-mode .tryon-arrow::after,
+.lensia-export-mode .result-preview-arrow::after {
+  content: none !important;
+  display: none !important;
+}
+
+@media print {
+  .lensia-export-stage {
+    display: none !important;
+  }
+}

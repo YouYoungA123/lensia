@@ -156,7 +156,7 @@
 }
 
 .result-color-chips {
-  margin-top: 10px;
+  margin-top: 30px;
   padding: 12px;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -188,14 +188,14 @@
 }
 
 .result-analysis-list {
-  margin: 18px 0 0;
+  margin: 30px 0 0;
   display: grid;
-  gap: 10px;
+  gap: 20px;
 }
 
 .result-analysis-list div {
   display: grid;
-  grid-template-columns: 64px 1fr;
+  grid-template-columns: 120px 1fr;
   gap: 8px;
   color: var(--text-secondary, #686b7d);
   font-size: 17px;
@@ -256,6 +256,7 @@
 
 .result-type-summary {
   min-width: 0;
+  transform: translateX(30px);
 }
 
 .result-type-badges {
@@ -413,21 +414,13 @@
   height: 112px;
   display: grid;
   place-content: center;
+  overflow: hidden;
   border-radius: 15px;
-  color: rgba(100,95,120,.5);
+  color: rgba(100, 95, 120, 0.5);
   font-size: 14px;
   font-weight: 900;
   letter-spacing: 1.4px;
-  background:
-    radial-gradient(circle, rgba(255,255,255,.94), rgba(237,220,202,.75) 35%, rgba(221,190,163,.68));
-}
-
-.result-product-card:nth-child(2) .result-product-image-placeholder {
-  background: radial-gradient(circle, #fff, #f4e5c9 42%, #ecd7b0);
-}
-
-.result-product-card:nth-child(3) .result-product-image-placeholder {
-  background: radial-gradient(circle, #fff, #eadfd3 42%, #dcc8b7);
+  background: transparent;
 }
 
 .result-product-card h3 {
@@ -786,6 +779,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 24px;
+    padding: 32px 30px 40px;
   }
 
   .result-section-title,
@@ -798,7 +792,7 @@
   .result-iris-preview {
     grid-column: 2;
     grid-row: 1 / span 4;
-    margin-top: 0;
+    margin-top: 24px;
   }
 }
 
@@ -1051,6 +1045,7 @@
   .result-type-summary {
     min-width: 250px;
     max-width: 300px;
+    transform: translateX(30px);
   }
 
   .result-axis-panel {
@@ -1073,7 +1068,7 @@
 }
 
 /* 1200px 이하 */
-@media (max-width: 1200px) {
+@media (max-width: 1350px) {
   .result-lpti-card {
     min-height: 600px;
     padding: 28px 30px 36px;
@@ -1100,6 +1095,7 @@
     width: 100%;
     min-width: 0;
     max-width: 380px;
+    transform: translateX(50px);
   }
 
   .result-type-summary > strong {
@@ -1135,6 +1131,59 @@
   }
 }
 
+/* =========================================================
+   1201px ~ 1350px
+   위: 홍채 분석 + 나의 LPTI
+   아래: 추천 렌즈 전체 너비
+========================================================= */
+@media (min-width: 1201px) and (max-width: 1350px) {
+  .result-upper {
+    display: grid;
+    grid-template-columns:
+      minmax(300px, 0.7fr)
+      minmax(0, 1.75fr);
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "iris lpti"
+      "products products";
+    gap: 18px;
+    align-items: stretch;
+  }
+
+  /* HTML 중간 래퍼만 그리드 계산에서 제거 */
+  .result-main-column {
+    display: contents;
+  }
+
+  /* 왼쪽 홍채 분석 */
+  .result-iris-card {
+    grid-area: iris;
+    height: 100%;
+    min-height: 600px;
+  }
+
+  /* 오른쪽 나의 LPTI */
+  .result-lpti-card {
+    grid-area: lpti;
+    height: 100%;
+    min-height: 600px;
+  }
+
+  /* 아래 추천 렌즈 */
+  .result-products {
+    grid-area: products;
+    width: 100%;
+    min-width: 0;
+    margin-top: 0;
+  }
+
+  .result-product-grid {
+    width: 100%;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+}
+
 /* 900px 이하 */
 @media (max-width: 900px) {
   .result-lpti-card {
@@ -1157,6 +1206,7 @@
 
   .result-type-summary {
     max-width: 340px;
+    transform: translateX(50px);
   }
 
   .result-type-summary > strong {
@@ -1202,6 +1252,7 @@
     max-width: 260px;
     margin-inline: auto;
     text-align: center;
+    transform: translateX(0px);
   }
 
   .result-type-badges {
@@ -1776,27 +1827,27 @@
 
 .result-character-visual {
   width: 100%;
-  min-height: 360px;
+  min-height: 290px;
 
   display: flex;
   align-items: flex-end;
   justify-content: center;
 
-  overflow: hidden;
+  overflow: visible;
 }
 
 .result-character-image {
   display: block;
-  width: min(100%, 320px);
-  max-height: 350px;
+  width: min(100%, 280px);
+  max-height: 280px;
   height: auto;
 
   object-fit: contain;
   object-position: center bottom;
 
-  filter: drop-shadow(
-    0 18px 28px rgba(111, 106, 168, 0.14)
-  );
+  transform: translate(0px, -20px);
+
+  filter: none;
 }
 
 @media (max-width: 760px) {
@@ -1818,4 +1869,373 @@
   justify-content: center;
   overflow: hidden;
   background: transparent;
+  transform: translate(30px, -20px);
+}
+/* LENSIA SOFT GRAY + LAVENDER COLOR OVERRIDE */
+#result-page,.result-dashboard{color:#595959;}
+.result-section-title h2,.result-lpti-card>h2,.result-recommend-heading h2,.result-tryon-heading h2,.result-section-title span,.result-iris-placeholder strong,.result-iris-placeholder p,.result-analysis-list div,.result-analysis-note,.result-type-summary>strong,.result-type-summary>small,.result-type-summary h3,.result-axis-row,.result-recommend-heading p,.result-product-card h3,.result-product-card p,.result-product-meta,.result-tryon-heading p,.result-tryon-title-line span,.result-tryon-step h3,.result-tryon-step p,.result-upload-option,.result-upload-option strong,.result-upload-option small,.result-file-status,.result-tryon-preview,.result-tryon-preview p,.result-save-button,.result-save-button small{color:#595959!important;}
+.result-iris-card,.result-lpti-card,.result-tryon-card,.result-product-card,.result-tryon-control,.result-tryon-preview-wrap{background:linear-gradient(135deg,rgba(255,255,255,.70),rgba(241,240,250,.48))!important;border-color:rgba(255,255,255,.88)!important;}
+.result-iris-placeholder,.result-tryon-preview{background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.84),rgba(241,240,250,.58) 48%,rgba(241,240,250,.42))!important;border-color:rgba(119,114,143,.26)!important;}
+.result-placeholder-icon,.result-iris-ring b,.result-upload-option>span,.result-upload-option>b,.result-tryon-arrow{color:#77728f!important;}
+.result-placeholder-button,.result-try-button,.result-tryon-analyze,.result-retest-button,.result-type-badges span,.result-best-label,.result-preview-label.active,.result-tryon-step>span{color:#595959!important;background:linear-gradient(135deg,#f1f0fa 0%,#e7e5f1 50%,#dad6e7 100%)!important;}
+.result-placeholder-button:hover,.result-try-button:hover,.result-tryon-analyze:hover:not(:disabled),.result-retest-button:hover{background:linear-gradient(135deg,#e3e0ee 0%,#d6d2e4 50%,#c8c3da 100%)!important;filter:none!important;}
+.result-type-badges b,.result-detail-button,.result-save-button,.result-preview-label{color:#595959!important;background:rgba(255,255,255,.76)!important;}
+.result-upload-option{background:rgba(255,255,255,.70)!important;border-color:rgba(119,114,143,.12)!important;}
+.result-upload-option:hover,.result-upload-option:not(.upload):hover,.result-upload-option.upload:hover{background:#e7e5f1!important;}
+.result-tryon-analyze{box-shadow:0 14px 30px rgba(111,106,143,.14),inset 0 1px 0 rgba(255,255,255,.56)!important;}
+.result-axis.warm,.result-axis.everyday,.result-axis.puppy,.result-axis.size{background:linear-gradient(90deg,#e8e6f2,#dcd8e9,#f1f0fa)!important;}
+.result-axis span{border-color:#d8d4e7!important;}
+.result-character-placeholder{color:#595959!important;background:linear-gradient(145deg,rgba(255,255,255,.78),rgba(241,240,250,.66))!important;}
+
+/* =========================================================
+   RESULT PAGE — SKY BLUE MAIN HOVER FINAL
+   홍채 분석 페이지와 동일한 하늘색 중심 톤
+   연보라는 보조 광원으로만 사용
+   레이아웃·크기·반응형은 변경하지 않음
+========================================================= */
+
+/* 결과 페이지 카드 배경: 기존 연보라 비중 축소 */
+.result-iris-card,
+.result-lpti-card,
+.result-tryon-card,
+.result-product-card,
+.result-tryon-control,
+.result-tryon-preview-wrap {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.76) 0%,
+      rgba(238, 246, 251, 0.62) 72%,
+      rgba(241, 240, 250, 0.34) 100%
+    ) !important;
+
+  border-color: rgba(255, 255, 255, 0.9) !important;
+
+  box-shadow:
+    0 18px 48px rgba(98, 116, 143, 0.09),
+    inset 0 1px 0 rgba(255, 255, 255, 0.84) !important;
+}
+
+/* 이미지·가상착용 미리보기 */
+.result-iris-placeholder,
+.result-tryon-preview {
+  background:
+    radial-gradient(
+      circle at 50% 46%,
+      rgba(255, 255, 255, 0.88) 0%,
+      rgba(238, 246, 251, 0.72) 52%,
+      rgba(241, 240, 250, 0.4) 100%
+    ) !important;
+
+  border-color: rgba(111, 127, 157, 0.24) !important;
+}
+
+/* 공통 포인트 컬러 */
+.result-placeholder-icon,
+.result-iris-ring b,
+.result-upload-option > span,
+.result-upload-option > b,
+.result-tryon-arrow {
+  color: #6f7f9d !important;
+}
+
+/* 메인 버튼 기본 */
+.result-placeholder-button,
+.result-try-button,
+.result-tryon-analyze,
+.result-retest-button,
+.result-type-badges span,
+.result-best-label,
+.result-preview-label.active,
+.result-tryon-step > span {
+  color: #595959 !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eef6fb 0%,
+      #dcecf8 62%,
+      #e9e7f3 100%
+    ) !important;
+
+  box-shadow:
+    0 12px 28px rgba(98, 116, 143, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.66) !important;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease !important;
+}
+
+/* 메인 버튼 호버 */
+.result-placeholder-button:hover,
+.result-try-button:hover,
+.result-tryon-analyze:hover:not(:disabled),
+.result-retest-button:hover {
+  color: #4f5d73 !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #dcecf8 0%,
+      #c8deed 68%,
+      #ddd9e9 100%
+    ) !important;
+
+  box-shadow:
+    0 16px 32px rgba(98, 116, 143, 0.17),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72) !important;
+
+  transform: translateY(-2px);
+  filter: none !important;
+}
+
+/* 보조 버튼 기본 */
+.result-type-badges b,
+.result-detail-button,
+.result-save-button,
+.result-preview-label {
+  color: #595959 !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  border-color: rgba(111, 127, 157, 0.13) !important;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease !important;
+}
+
+/* 보조 버튼 호버 */
+.result-detail-button:hover,
+.result-save-button:hover {
+  color: #4f5d73 !important;
+  background: #dcecf8 !important;
+
+  box-shadow:
+    0 12px 26px rgba(98, 116, 143, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.76) !important;
+
+  transform: translateY(-2px);
+}
+
+/* 업로드 버튼 기본 */
+.result-upload-option {
+  color: #595959 !important;
+  background: rgba(255, 255, 255, 0.74) !important;
+  border-color: rgba(111, 127, 157, 0.13) !important;
+
+  box-shadow:
+    0 10px 26px rgba(98, 116, 143, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.84) !important;
+}
+
+/* 카메라 촬영 호버: 하늘색 */
+.result-upload-option:not(.upload):hover {
+  color: #4f5d73 !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eef6fb 0%,
+      #dcecf8 72%,
+      #e8e6f2 100%
+    ) !important;
+
+  box-shadow:
+    0 14px 30px rgba(98, 116, 143, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88) !important;
+}
+
+/* 이미지 업로드 호버: 하늘색 중심 + 연보라 끝광 */
+.result-upload-option.upload:hover {
+  color: #4f5d73 !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eef6fb 0%,
+      #dcecf8 64%,
+      #e5e2f0 100%
+    ) !important;
+
+  box-shadow:
+    0 14px 30px rgba(98, 116, 143, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88) !important;
+}
+
+/* 업로드 아이콘 박스 */
+.result-upload-option > span,
+.result-upload-option-image {
+  color: #6f7f9d !important;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.9),
+      rgba(238, 246, 251, 0.78)
+    ) !important;
+}
+
+/* 파일 상태 */
+.result-file-status {
+  color: #595959 !important;
+  background: rgba(255, 255, 255, 0.62) !important;
+  border-color: rgba(111, 127, 157, 0.1) !important;
+}
+
+/* 타입 배지 */
+.result-type-badges span,
+.result-best-label {
+  color: #595959 !important;
+  background:
+    linear-gradient(
+      135deg,
+      #eef6fb,
+      #dcecf8 68%,
+      #e7e4f1
+    ) !important;
+}
+
+/* 캐릭터 자리 */
+.result-character-placeholder {
+  color: #595959 !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.82),
+      rgba(238, 246, 251, 0.7)
+    ) !important;
+
+  border-color: rgba(111, 127, 157, 0.2) !important;
+}
+
+/* 스펙트럼 배경: 하늘색 중심 */
+.result-axis.warm,
+.result-axis.everyday,
+.result-axis.puppy,
+.result-axis.size {
+  background:
+    linear-gradient(
+      90deg,
+      #eef6fb 0%,
+      #dcecf8 58%,
+      #e8e6f2 100%
+    ) !important;
+}
+
+.result-axis span {
+  border-color: #c8deed !important;
+  box-shadow: 0 4px 13px rgba(98, 116, 143, 0.18) !important;
+}
+
+/* 추천 렌즈 카드 호버 */
+.result-product-card {
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease !important;
+}
+
+.result-product-card:hover {
+  transform: translateY(-4px);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.82),
+      rgba(238, 246, 251, 0.72)
+    ) !important;
+
+  box-shadow:
+    0 20px 44px rgba(98, 116, 143, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88) !important;
+}
+
+/* 미리보기 라벨 활성 */
+.result-preview-label.active {
+  color: #595959 !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eef6fb,
+      #dcecf8 68%,
+      #e7e4f1
+    ) !important;
+}
+
+/* 가상착용 화살표 */
+.result-tryon-arrow {
+  color: #6f7f9d !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 8px 22px rgba(98, 116, 143, 0.16) !important;
+}
+
+/* 비활성 분석 버튼 */
+.result-tryon-analyze:disabled {
+  color: rgba(89, 89, 89, 0.42) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(238, 246, 251, 0.78),
+      rgba(220, 236, 248, 0.66),
+      rgba(233, 231, 243, 0.56)
+    ) !important;
+
+  opacity: 0.72 !important;
+  box-shadow: none !important;
+}
+
+/* 캐릭터 이미지가 아직 없을 때 표시되는 준비 중 화면 */
+.result-character-placeholder {
+  width: 100%;
+  min-height: 230px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  border: 1px dashed rgba(146, 143, 174, 0.35);
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(248, 247, 252, 0.94),
+      rgba(239, 239, 248, 0.82)
+    );
+
+  color: #77758a;
+  text-align: center;
+
+  transform: translateY(-48px);
+}
+
+.result-character-placeholder[hidden] {
+  display: none;
+}
+
+.result-character-placeholder > span {
+  font-size: 24px;
+  color: #aaa5c8;
+}
+
+.result-character-placeholder > strong {
+  font-size: 15px;
+  font-weight: 700;
+  color: #676579;
+}
+
+.result-character-placeholder > small {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #aaa8b8;
 }

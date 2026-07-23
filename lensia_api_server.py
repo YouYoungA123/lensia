@@ -14,6 +14,7 @@ from lens_ratio_analyzer import analyze_image, create_detector, parse_hex_color
 ROOT = Path(__file__).resolve().parent
 UPLOAD_DIR = ROOT / "web_uploads"
 OUTPUT_DIR = ROOT / "web_output"
+LENS_ASSET_DIR = ROOT / "assets" / "lenses-api"
 HOST = "127.0.0.1"
 PORT = 8000
 
@@ -68,8 +69,27 @@ class Handler(BaseHTTPRequestHandler):
         lens_color = parse_hex_color(form.getfirst("lens_color", "#8B5E3C"))
         graphic_scale = float(form.getfirst("graphic_scale", "1.0"))
         tryon_alpha = float(form.getfirst("tryon_alpha", "0.38"))
+        lens_asset_path = None
+        lens_asset = form.getfirst("lens_asset", "").strip().replace("\\", "/")
+        if lens_asset:
+            candidate = (ROOT / lens_asset).resolve()
+            try:
+                candidate.relative_to(LENS_ASSET_DIR.resolve())
+            except ValueError:
+                raise ValueError("Invalid lens asset path")
+            if not candidate.exists() or not candidate.is_file():
+                raise ValueError("Lens asset file not found")
+            lens_asset_path = candidate
         with create_detector() as detector:
-            return analyze_image(upload_path, OUTPUT_DIR, detector, lens_color, graphic_scale, tryon_alpha)
+            return analyze_image(
+                upload_path,
+                OUTPUT_DIR,
+                detector,
+                lens_color,
+                graphic_scale,
+                tryon_alpha,
+                lens_asset_path=lens_asset_path,
+            )
 
     def send_file(self, path: Path) -> None:
         resolved = path.resolve()

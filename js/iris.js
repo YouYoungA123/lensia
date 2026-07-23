@@ -46,10 +46,6 @@
   let previewUrl = null;
   let isAnalyzing = false;
 
-  /*
-   * 다른 파일에서도 홍채 분석 여부를 확인할 수 있도록
-   * 간단한 전역 상태를 만들어 둡니다.
-   */
   window.lensiaIrisState = {
     analyzed: false,
     skipped: false,
@@ -137,6 +133,10 @@
     window.lensiaIrisState.hasImage = true;
     window.lensiaIrisState.fileName = file.name;
     window.lensiaIrisState.skipped = false;
+
+    sessionStorage.removeItem(
+      "lensiaIrisAnalysisResult",
+    );
   }
 
   function resetSelectedFile() {
@@ -190,6 +190,14 @@
     window.lensiaIrisState.skipped = false;
     window.lensiaIrisState.hasImage = false;
     window.lensiaIrisState.fileName = "";
+
+    sessionStorage.removeItem(
+      "lensiaIrisImageDataUrl",
+    );
+
+    sessionStorage.removeItem(
+      "lensiaIrisAnalysisResult",
+    );
   }
 
   function goToResultPage() {
@@ -198,14 +206,30 @@
       return;
     }
 
-    /*
-     * showPage가 전역으로 연결되지 않은 경우를 위한 예비 처리
-     */
     window.location.hash = "result";
     window.location.reload();
   }
 
-  function startTemporaryAnalysis() {
+  function fileToDataUrl(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.addEventListener("load", () => {
+        resolve(String(reader.result || ""));
+      });
+
+      reader.addEventListener("error", () => {
+        reject(
+          reader.error ||
+          new Error("이미지를 읽지 못했습니다.")
+        );
+      });
+
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function startTemporaryAnalysis() {
     if (!selectedFile || isAnalyzing) {
       return;
     }
@@ -224,24 +248,52 @@
       analyzeButtonText.textContent = "이미지 분석 중";
     }
 
-    /*
-     * 현재는 실제 API가 없으므로
-     * 약 1.2초 동안 분석 화면만 보여준 뒤 결과로 이동합니다.
-     *
-     * 추후 친구가 API를 연결할 때 이 setTimeout 부분을
-     * fetch API 호출로 교체하면 됩니다.
-     */
-    window.setTimeout(() => {
-      window.lensiaIrisState.analyzed = true;
+    try {
+      /*
+       * 현재는 실제 분석 API가 없으므로
+       * 선택한 이미지만 결과 페이지로 전달합니다.
+       *
+       * 피부색, 홍채색, HSV, 비율 등의 값은 저장하지 않아서
+       * 결과 페이지에는 "테스트 전입니다"가 표시됩니다.
+       */
+      const imageDataUrl =
+        await fileToDataUrl(selectedFile);
+
+      await new Promise((resolve) => {
+        window.setTimeout(resolve, 1200);
+      });
+
+      window.lensiaIrisState.analyzed = false;
       window.lensiaIrisState.skipped = false;
       window.lensiaIrisState.hasImage = true;
-      window.lensiaIrisState.fileName = selectedFile.name;
+      window.lensiaIrisState.fileName =
+        selectedFile.name;
 
       sessionStorage.setItem(
         "lensiaIrisState",
-        JSON.stringify(window.lensiaIrisState)
+        JSON.stringify(window.lensiaIrisState),
       );
 
+      sessionStorage.setItem(
+        "lensiaIrisImageDataUrl",
+        imageDataUrl,
+      );
+
+      sessionStorage.removeItem(
+        "lensiaIrisAnalysisResult",
+      );
+
+      goToResultPage();
+    } catch (error) {
+      console.error(
+        "홍채 이미지를 처리하지 못했습니다.",
+        error,
+      );
+
+      window.alert(
+        "이미지를 처리하지 못했어요. 다시 시도해 주세요.",
+      );
+    } finally {
       if (loadingLayer) {
         loadingLayer.hidden = true;
       }
@@ -251,9 +303,12 @@
           "홍채 이미지 분석하기";
       }
 
+      if (analyzeButton) {
+        analyzeButton.disabled = !selectedFile;
+      }
+
       isAnalyzing = false;
-      goToResultPage();
-    }, 1200);
+    }
   }
 
   function skipIrisAnalysis() {
@@ -263,13 +318,20 @@
 
     window.lensiaIrisState.analyzed = false;
     window.lensiaIrisState.skipped = true;
-    window.lensiaIrisState.hasImage = Boolean(selectedFile);
-    window.lensiaIrisState.fileName =
-      selectedFile?.name ?? "";
+    window.lensiaIrisState.hasImage = false;
+    window.lensiaIrisState.fileName = "";
 
     sessionStorage.setItem(
       "lensiaIrisState",
-      JSON.stringify(window.lensiaIrisState)
+      JSON.stringify(window.lensiaIrisState),
+    );
+
+    sessionStorage.removeItem(
+      "lensiaIrisImageDataUrl",
+    );
+
+    sessionStorage.removeItem(
+      "lensiaIrisAnalysisResult",
     );
 
     goToResultPage();
@@ -289,11 +351,19 @@
   });
 
   removeButton?.addEventListener("click", resetSelectedFile);
+
   analyzeButton?.addEventListener(
     "click",
     startTemporaryAnalysis
   );
-  skipButton?.addEventListener("click", skipIrisAnalysis);
 
-  window.addEventListener("beforeunload", releasePreviewUrl);
+  skipButton?.addEventListener(
+    "click",
+    skipIrisAnalysis
+  );
+
+  window.addEventListener(
+    "beforeunload",
+    releasePreviewUrl
+  );
 })();

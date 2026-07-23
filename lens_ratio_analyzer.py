@@ -101,6 +101,14 @@ def write_image(path: Path, image: np.ndarray) -> None:
     encoded.tofile(str(path))
 
 
+def read_image_unchanged(path: Path) -> np.ndarray:
+    encoded = np.fromfile(str(path), dtype=np.uint8)
+    image = cv2.imdecode(encoded, cv2.IMREAD_UNCHANGED)
+    if image is None:
+        raise ValueError(f"Could not read image: {path}")
+    return image
+
+
 def parse_hex_color(hex_color: str) -> tuple[int, int, int]:
     value = hex_color.strip().lstrip("#")
     if len(value) != 6:
@@ -294,7 +302,43 @@ def build_lpti_hint(skin: ColorAnalysis, iris: ColorAnalysis, style: dict[str, A
     }
 
 
-def render_tryon_preview(image: np.ndarray, eyes: list[EyeAnalysis], lens_color: tuple[int, int, int], graphic_scale: float, alpha: float) -> np.ndarray:
+def alpha_blend_patch(base: np.ndarray, patch: np.ndarray, center: tuple[int, int], alpha_scale: float) -> None:
+    patch_height, patch_width = patch.shape[:2]
+    center_x, center_y = center
+    x1 = max(0, center_x - patch_width // 2)
+    y1 = max(0, center_y - patch_height // 2)
+    x2 = min(base.shape[1], x1 + patch_width)
+    y2 = min(base.shape[0], y1 + patch_height)
+    if x1 >= x2 or y1 >= y2:
+        return
+
+    patch_x1 = max(0, patch_width // 2 - center_x)
+    patch_y1 = max(0, patch_height // 2 - center_y)
+    patch_x2 = patch_x1 + (x2 - x1)
+    patch_y2 = patch_y1 + (y2 - y1)
+    patch_roi = patch[patch_y1:patch_y2, patch_x1:patch_x2]
+
+    if patch_roi.shape[2] == 4:
+        patch_bgr = patch_roi[:, :, :3]
+        patch_alpha = patch_roi[:, :, 3:4].astype(np.float32) / 255.0
+    else:
+        patch_bgr = patch_roi[:, :, :3]
+        patch_alpha = np.ones((*patch_roi.shape[:2], 1), dtype=np.float32)
+
+    patch_alpha = np.clip(patch_alpha * alpha_scale, 0.0, 1.0)
+    base_roi = base[y1:y2, x1:x2].astype(np.float32)
+    blended = patch_bgr.astype(np.float32) * patch_alpha + base_roi * (1.0 - patch_alpha)
+    base[y1:y2, x1:x2] = np.clip(blended, 0, 255).astype(np.uint8)
+
+
+def render_tryon_preview(
+    image: np.ndarray,
+    eyes: list[EyeAnalysis],
+    lens_color: tuple[int, int, int],
+    graphic_scale: float,
+    alpha: float,
+    lens_asset: np.ndarray | None = None,
+) -> np.ndarray:
     preview = image.copy()
     overlay = image.copy()
     alpha = min(1.0, max(0.0, alpha))
@@ -302,9 +346,17 @@ def render_tryon_preview(image: np.ndarray, eyes: list[EyeAnalysis], lens_color:
         center = (round(eye.iris_center_px.x), round(eye.iris_center_px.y))
         radius = max(1, round(eye.iris_radius_px * graphic_scale))
         pupil_radius = max(1, round(eye.iris_radius_px * 0.35))
+        if lens_asset is not None:
+            diameter = max(2, radius * 2)
+            resized = cv2.resize(lens_asset, (diameter, diameter), interpolation=cv2.INTER_AREA)
+            alpha_blend_patch(preview, resized, center, alpha)
+            cv2.circle(preview, center, pupil_radius, (0, 0, 0), -1, cv2.LINE_AA)
+            continue
         cv2.circle(overlay, center, radius, lens_color, -1, cv2.LINE_AA)
         cv2.circle(overlay, center, pupil_radius, (0, 0, 0), -1, cv2.LINE_AA)
         cv2.circle(overlay, center, radius, tuple(int(v * 0.55) for v in lens_color), 2, cv2.LINE_AA)
+    if lens_asset is not None:
+        return preview
     cv2.addWeighted(overlay, alpha, preview, 1.0 - alpha, 0, preview)
     return preview
 
@@ -326,6 +378,7 @@ def analyze_image(
     lens_color: tuple[int, int, int],
     graphic_scale: float = 1.0,
     tryon_alpha: float = 0.38,
+    lens_asset_path: Path | None = None,
 ) -> dict[str, Any]:
     image = read_image(image_path)
     height, width = image.shape[:2]
@@ -365,8 +418,9 @@ def analyze_image(
 
     annotated_path = image_output_dir / "annotated_eye_face_ratio.jpg"
     tryon_path = image_output_dir / "tryon_preview.jpg"
+    lens_asset = read_image_unchanged(lens_asset_path) if lens_asset_path else None
     write_image(annotated_path, draw_annotations(image, face_points, eyes))
-    write_image(tryon_path, render_tryon_preview(image, eyes, lens_color, graphic_scale, tryon_alpha))
+    write_image(tryon_path, render_tryon_preview(image, eyes, lens_color, graphic_scale, tryon_alpha, lens_asset))
 
     avg_eye_face = sum(e.eye_to_face_width_ratio for e in eyes) / len(eyes)
     avg_iris_eye = sum(e.visible_iris_to_eye_width_ratio for e in eyes) / len(eyes)
@@ -395,6 +449,7 @@ def analyze_image(
         "artifacts": {
             "annotated_image": str(annotated_path),
             "tryon_preview": str(tryon_path),
+            "lens_asset": str(lens_asset_path) if lens_asset_path else None,
             "output_dir": str(image_output_dir),
         },
         "measurement_notes": {

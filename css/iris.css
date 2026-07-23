@@ -818,3 +818,127 @@
     margin-bottom: 18px;
   }
 }
+/* LENSIA SOFT GRAY + LAVENDER COLOR OVERRIDE */
+#iris-page,.iris-analysis-shell{color:#595959;}
+.iris-eyebrow,.iris-analysis-header h1,.iris-header-description,.iris-step-heading h2,.iris-step-heading p,.iris-button-copy strong,.iris-button-copy small,.iris-file-status p,.iris-skip-button,.iris-preview-heading span,.iris-preview-heading strong,.iris-remove-button,.iris-preview-placeholder strong,.iris-preview-placeholder p,.iris-analysis-loading strong,.iris-analysis-loading p,.iris-preview-note,.iris-guide-item strong,.iris-guide-item p{color:#595959!important;}
+.iris-control-panel,.iris-preview-panel,.iris-guide-item{background:linear-gradient(135deg,rgba(255,255,255,.70),rgba(241,240,250,.48))!important;border-color:rgba(255,255,255,.88)!important;box-shadow:0 16px 42px rgba(100,98,118,.09),inset 0 1px 0 rgba(255,255,255,.82)!important;}
+.iris-step-number,.iris-analyze-button{color:#595959!important;background:linear-gradient(135deg,#f1f0fa 0%,#e7e5f1 50%,#dad6e7 100%)!important;}
+.iris-analyze-button:hover:not(:disabled){background:linear-gradient(135deg,#e3e0ee 0%,#d6d2e4 50%,#c8c3da 100%)!important;filter:none!important;}
+.iris-main-button,.iris-camera-button,.iris-upload-button,.iris-file-status,.iris-remove-button{color:#595959!important;background:rgba(255,255,255,.70)!important;border-color:rgba(119,114,143,.12)!important;}
+.iris-camera-button:hover,.iris-upload-button:hover,.iris-main-button:hover,.iris-remove-button:hover{background:#e7e5f1!important;}
+.iris-button-icon,.iris-button-arrow,.iris-file-status span,.iris-preview-heading span,.iris-guide-icon{color:#77728f!important;}
+.iris-guide-icon{background:linear-gradient(145deg,#f1f0fa,#e4e1ef)!important;}
+.iris-preview-box{border-color:rgba(119,114,143,.28)!important;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.82),rgba(241,240,250,.58) 48%,rgba(241,240,250,.42))!important;}
+.iris-analysis-loading{background:rgba(249,249,249,.92)!important;}
+.iris-loading-circle{border-color:rgba(216,212,231,.54)!important;border-top-color:#77728f!important;}
+
+/* =========================================================
+   LENSIA SKY BLUE MAIN + SOFT LAVENDER GLOW
+   하늘색을 메인으로, 연보라가 은은하게 번지는 최종 오버라이드
+   레이아웃·크기·반응형은 변경하지 않음
+========================================================= */
+
+.iris-control-panel,
+.iris-preview-panel,
+.iris-guide-item {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.72), rgba(238,246,251,.52)) !important;
+}
+
+.iris-step-number,
+.iris-analyze-button {
+  color: #595959 !important;
+  background: linear-gradient(135deg, #eef6fb 0%, #dcecf8 58%, #e7e5f2 100%) !important;
+}
+
+.iris-analyze-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #dcecf8 0%, #c8deed 58%, #d8d4e8 100%) !important;
+}
+
+.iris-camera-button:hover,
+.iris-main-button:hover {
+  background: #dcecf8 !important;
+}
+
+.iris-upload-button:hover,
+.iris-remove-button:hover {
+  background: linear-gradient(135deg, #eef6fb, #e7e5f2) !important;
+}
+
+.iris-button-icon,
+.iris-button-arrow,
+.iris-file-status span,
+.iris-preview-heading span,
+.iris-guide-icon {
+  color: #6f7f9d !important;
+}
+
+.iris-guide-icon {
+  background: linear-gradient(145deg, #eef6fb 0%, #dcecf8 68%, #f1f0fa 100%) !important;
+}
+
+.iris-preview-box {
+  border-color: rgba(111,127,157,.28) !important;
+  background:
+    radial-gradient(circle at 52% 48%, rgba(255,255,255,.84), rgba(220,236,248,.62) 48%, rgba(241,240,250,.46)) !important;
+}
+
+.iris-loading-circle {
+  border-color: rgba(200,222,237,.56) !important;
+  border-top-color: #6f7f9d !important;
+}
+
+/* =========================================================
+   IRIS UPLOAD HOVER TONE SYNC — FINAL
+   가상 착용 카메라 촬영하기와 동일한 톤
+========================================================= */
+
+.iris-main-button {
+  color: #595959 !important;
+  background: rgba(255, 255, 255, 0.74) !important;
+  border-color: rgba(111, 127, 157, 0.13) !important;
+  box-shadow:
+    0 10px 26px rgba(98, 116, 143, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.84) !important;
+}
+
+/* 카메라 촬영 / 이미지 업로드 모두 동일한 호버톤 */
+.iris-main-button:hover,
+.iris-camera-button:hover,
+.iris-upload-button:hover {
+  color: #4f5d73 !important;
+  background:
+    linear-gradient(
+      135deg,
+      #eef6fb 0%,
+      #dcecf8 72%,
+      #e8e6f2 100%
+    ) !important;
+  border-color: rgba(111, 127, 157, 0.16) !important;
+  box-shadow:
+    0 14px 30px rgba(98, 116, 143, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* 아이콘 박스도 가상 착용과 동일 */
+.iris-button-icon,
+.iris-button-image {
+  color: #6f7f9d !important;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.9),
+      rgba(238, 246, 251, 0.78)
+    ) !important;
+}
+
+.iris-placeholder-eye-image {
+  display: block;
+  width: min(220px, 58%);
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto 20px;
+  pointer-events: none;
+  user-select: none;
+}

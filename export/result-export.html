@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>LENSIA 결과 저장 미리보기</title>
+
+  <style>
+    :root {
+      font-family:
+        Pretendard,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      color: #4f5561;
+      background: #e8ebf0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-width: 100%;
+      min-height: 100%;
+    }
+
+    body {
+      padding: 24px;
+    }
+
+    .preview-toolbar {
+      position: sticky;
+      top: 16px;
+      z-index: 10;
+
+      width: min(1400px, 100%);
+      margin: 0 auto 18px;
+      padding: 14px 16px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 18px;
+
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 12px 32px rgba(80, 91, 111, 0.14);
+      backdrop-filter: blur(16px);
+    }
+
+    .preview-toolbar-text {
+      min-width: 0;
+    }
+
+    .preview-toolbar-title {
+      margin: 0 0 4px;
+
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .preview-toolbar-description {
+      margin: 0;
+
+      font-size: 13px;
+      line-height: 1.45;
+      color: #7b8391;
+    }
+
+    .preview-toolbar-actions {
+      display: flex;
+      flex: 0 0 auto;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .preview-button {
+      min-height: 42px;
+      padding: 0 16px;
+
+      border: 0;
+      border-radius: 13px;
+
+      font: inherit;
+      font-size: 13px;
+      font-weight: 750;
+
+      color: #586273;
+      background: #edf2f8;
+
+      cursor: pointer;
+    }
+
+    .preview-button:hover {
+      background: #e3eaf3;
+    }
+
+    .preview-button.primary {
+      color: #ffffff;
+      background: #7f8da7;
+    }
+
+    .preview-button.primary:hover {
+      background: #6f7e99;
+    }
+
+    .preview-shell {
+      width: min(1400px, 100%);
+      margin: 0 auto;
+
+      overflow: auto;
+
+      border-radius: 22px;
+
+      background: #f9f9f9;
+      box-shadow: 0 24px 70px rgba(63, 71, 86, 0.18);
+    }
+
+    /*
+      실제 저장 이미지 너비와 동일하게
+      iframe을 1400px로 고정합니다.
+    */
+    #result-preview-frame {
+      display: block;
+
+      width: 1400px;
+      height: 1800px;
+
+      border: 0;
+
+      background: #f9f9f9;
+    }
+
+    .preview-message {
+      width: min(1400px, 100%);
+      margin: 12px auto 0;
+
+      font-size: 12px;
+      color: #7f8795;
+    }
+
+    @media (max-width: 760px) {
+      body {
+        padding: 12px;
+      }
+
+      .preview-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .preview-toolbar-actions {
+        width: 100%;
+      }
+
+      .preview-button {
+        flex: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="preview-toolbar">
+    <div class="preview-toolbar-text">
+      <h1 class="preview-toolbar-title">
+        LENSIA 결과 저장 미리보기
+      </h1>
+
+      <p class="preview-toolbar-description">
+        아래 화면은 1400px 저장용 레이아웃입니다.
+        result-export.css를 수정하고 새로고침하면 바로 확인할 수 있어요.
+      </p>
+    </div>
+
+    <div class="preview-toolbar-actions">
+      <button
+        id="reload-preview"
+        class="preview-button"
+        type="button"
+      >
+        미리보기 새로고침
+      </button>
+
+      <button
+        id="open-result-page"
+        class="preview-button primary"
+        type="button"
+      >
+        원본 결과 페이지 열기
+      </button>
+    </div>
+  </header>
+
+  <main class="preview-shell">
+    <!--
+      result-export.html 위치:
+      /export/result-export.html
+
+      원본 index.html 위치:
+      /index.html
+
+      그래서 ../index.html을 불러옵니다.
+    -->
+    <iframe
+      id="result-preview-frame"
+      src="../index.html#result-page"
+      title="LENSIA 결과 저장 미리보기"
+    ></iframe>
+  </main>
+
+  <p class="preview-message">
+    VS Code Live Server로 실행해 주세요.
+    파일을 직접 더블클릭해서 file:// 주소로 열면
+    iframe 내부 제어가 막힐 수 있습니다.
+  </p>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const frame = document.querySelector(
+        "#result-preview-frame",
+      );
+
+      const reloadButton = document.querySelector(
+        "#reload-preview",
+      );
+
+      const openResultButton = document.querySelector(
+        "#open-result-page",
+      );
+
+      /*
+        프로젝트 구조에 따라
+        결과 화면 후보를 순서대로 찾습니다.
+      */
+    const RESULT_SECTION_SELECTORS = [
+    "#result-page",
+    "#result",
+    "#result-screen",
+    ".result-screen",
+    '[data-screen="result"]',
+    '[data-page="result"]',
+    ];
+
+      function findResultSection(documentObject) {
+        for (const selector of RESULT_SECTION_SELECTORS) {
+          const element =
+            documentObject.querySelector(selector);
+
+          if (element) {
+            return element;
+          }
+        }
+
+        return null;
+      }
+
+      function preparePreview() {
+        const frameDocument =
+          frame.contentDocument ||
+          frame.contentWindow?.document;
+
+        if (!frameDocument) {
+          return;
+        }
+
+        const resultSection =
+          findResultSection(frameDocument);
+
+        if (!resultSection) {
+          console.error(
+            "[LENSIA PREVIEW] 결과 영역을 찾지 못했습니다.",
+          );
+
+          return;
+        }
+
+        /*
+          결과 화면이 아닌 다른 화면은 숨깁니다.
+        */
+        const possibleScreens =
+          frameDocument.querySelectorAll(
+            "main > section, body > section, .screen, .page",
+          );
+
+        possibleScreens.forEach((section) => {
+          if (
+            section !== resultSection &&
+            !section.contains(resultSection)
+          ) {
+            section.style.setProperty(
+              "display",
+              "none",
+              "important",
+            );
+          }
+        });
+
+        /*
+          원본 페이지의 헤더도 숨깁니다.
+        */
+        const header =
+          frameDocument.querySelector(
+            "header, .site-header, .topbar",
+          );
+
+        if (header) {
+          header.style.setProperty(
+            "display",
+            "none",
+            "important",
+          );
+        }
+
+        /*
+          결과 화면을 강제로 표시합니다.
+        */
+        resultSection.hidden = false;
+
+        resultSection.classList.add("active");
+        resultSection.classList.remove("hidden");
+
+        resultSection.style.setProperty(
+        "display",
+        "block",
+        "important",
+        );
+
+        resultSection.style.setProperty(
+        "position",
+        "relative",
+        "important",
+        );
+
+        resultSection.style.setProperty(
+        "inset",
+        "auto",
+        "important",
+        );
+
+        resultSection.style.setProperty(
+          "display",
+          "block",
+          "important",
+        );
+
+        resultSection.style.setProperty(
+          "visibility",
+          "visible",
+          "important",
+        );
+
+        resultSection.style.setProperty(
+          "opacity",
+          "1",
+          "important",
+        );
+
+        /*
+          실제 저장할 전체 결과 영역을 찾습니다.
+        */
+        const dashboard =
+          resultSection.querySelector(
+            ".result-dashboard",
+          ) ||
+          frameDocument.querySelector(
+            ".result-dashboard",
+          );
+
+        if (!dashboard) {
+          console.error(
+            "[LENSIA PREVIEW] .result-dashboard를 찾지 못했습니다.",
+          );
+
+          return;
+        }
+
+        /*
+          실제 result-export.js가 저장할 때 추가하는
+          클래스와 동일한 클래스를 붙입니다.
+        */
+        dashboard.classList.add(
+          "lensia-export-mode",
+        );
+
+        /*
+          저장 이미지에서 제외되는 버튼과 입력 요소를
+          미리보기에서도 숨깁니다.
+        */
+        const excludedSelectors = [
+          ".result-bottom-actions",
+
+          "#restart-test",
+          "#save-result-image",
+
+          ".result-placeholder-button",
+          ".result-detail-button",
+          ".result-try-button",
+
+          "#tryon-camera-button",
+          "#tryon-upload-button",
+          "#tryon-analyze-button",
+
+          "#tryon-camera-input",
+          "#tryon-file-input",
+
+          "[data-export-exclude]",
+        ];
+
+        excludedSelectors.forEach((selector) => {
+          frameDocument
+            .querySelectorAll(selector)
+            .forEach((element) => {
+              element.style.setProperty(
+                "display",
+                "none",
+                "important",
+              );
+            });
+        });
+
+        /*
+          iframe 내부 문서 너비를
+          실제 저장 너비인 1400px로 고정합니다.
+        */
+        frameDocument.documentElement.style.width =
+          "1400px";
+
+        frameDocument.documentElement.style.minWidth =
+          "1400px";
+
+        frameDocument.body.style.width =
+          "1400px";
+
+        frameDocument.body.style.minWidth =
+          "1400px";
+
+        frameDocument.body.style.margin = "0";
+        frameDocument.body.style.overflow = "hidden";
+
+        /*
+          결과 화면을 맨 위부터 보여줍니다.
+        */
+        frame.contentWindow.scrollTo(0, 0);
+
+        /*
+          결과 전체 높이에 맞춰
+          iframe 높이를 자동으로 조절합니다.
+        */
+        window.setTimeout(() => {
+          const contentHeight = Math.max(
+            resultSection.scrollHeight,
+            dashboard.scrollHeight,
+            frameDocument.body.scrollHeight,
+          );
+
+          frame.style.height =
+            `${contentHeight}px`;
+        }, 250);
+      }
+
+      /*
+        iframe 안의 index.html 로딩이 끝난 뒤
+        미리보기 상태로 변경합니다.
+      */
+      frame.addEventListener(
+        "load",
+        preparePreview,
+      );
+
+      reloadButton.addEventListener(
+        "click",
+        () => {
+          frame.contentWindow.location.reload();
+        },
+      );
+
+      openResultButton.addEventListener(
+        "click",
+        () => {
+          window.open(
+            "../index.html#result",
+            "_blank",
+          );
+        },
+      );
+    })();
+  </script>
+</body>
+</html>

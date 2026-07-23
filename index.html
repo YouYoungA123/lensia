@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="./css/intro.css">
   <link rel="stylesheet" href="./css/iris.css" />
   <link rel="stylesheet" href="./css/result.css" />
+  <link rel="stylesheet" href="./export/result-export.css">
 
 </head>
 <body>
@@ -224,7 +225,7 @@
       <!-- =====================================================
           홍채 이미지 분석 페이지
           LPTI 설문 완료 후 표시되는 진단하기 두 번째 단계
-      ===================================================== -->
+      ====================================================== -->
       <section id="iris-page" class="page">
         <section class="iris-analysis-shell glass-card">
 
@@ -266,7 +267,7 @@
               <div class="iris-button-group">
                 <button
                   id="iris-camera-button"
-                  class="iris-main-button iris-camera-button"
+                  class="iris-main-button iris-upload-button"
                   type="button"
                 >
                   <img
@@ -378,9 +379,11 @@
                   id="iris-preview-placeholder"
                   class="iris-preview-placeholder"
                 >
-                  <div class="iris-placeholder-eye">
-                    <span class="iris-placeholder-pupil"></span>
-                  </div>
+                <img
+                  src="./assets/iris-preview-eye.png"
+                  alt="눈 이미지 업로드 안내"
+                  class="iris-placeholder-eye-image"
+                />
 
                   <strong>눈 이미지 미리보기</strong>
                   <p>
@@ -498,19 +501,69 @@
                 </div>
               </div>
 
-              <div class="result-color-chips">
-                <span style="--chip:#c9a2a4"><small>SKIN</small><b>C9A2A4</b></span>
-                <span style="--chip:#3c282b"><small>IRIS</small><b>3C282B</b></span>
-                <span style="--chip:#8b5e3c"><small>LENS</small><b>8B5E3C</b></span>
-                <span style="--chip:#3c282b"><small>TONE</small><b>3C282B</b></span>
+              <div class="result-color-chips" aria-label="AI 컬러 분석 결과">
+                <span
+                  id="skin-color-chip"
+                  class="result-color-chip is-pending"
+                  style="--chip:#d9dce5"
+                >
+                  <small>SKIN</small>
+                  <b id="skin-color-chip-value">테스트 전</b>
+                </span>
+
+                <span
+                  id="iris-color-chip"
+                  class="result-color-chip is-pending"
+                  style="--chip:#d9dce5"
+                >
+                  <small>IRIS</small>
+                  <b id="iris-color-chip-value">테스트 전</b>
+                </span>
+
+                <span
+                  id="lens-color-chip"
+                  class="result-color-chip is-pending"
+                  style="--chip:#d9dce5"
+                >
+                  <small>LENS</small>
+                  <b id="lens-color-chip-value">테스트 전</b>
+                </span>
+
+                <span
+                  id="tone-color-chip"
+                  class="result-color-chip is-pending"
+                  style="--chip:#d9dce5"
+                >
+                  <small>TONE</small>
+                  <b id="tone-color-chip-value">테스트 전</b>
+                </span>
               </div>
 
               <dl class="result-analysis-list">
-                <div><dt>피부</dt><dd>#C9A2A4 / warm-light</dd></div>
-                <div><dt>홍채</dt><dd>#3C282B / dark-warm</dd></div>
-                <div><dt>눈·얼굴 비율</dt><dd>19.90%</dd></div>
-                <div><dt>피부 HSV</dt><dd>H 356, S 0.1922, V 0.7882</dd></div>
-                <div><dt>홍채 HSV</dt><dd>H 352, S 0.3373, V 0.2314</dd></div>
+                <div>
+                  <dt>피부</dt>
+                  <dd id="skin-color-detail">테스트 전입니다</dd>
+                </div>
+
+                <div>
+                  <dt>홍채</dt>
+                  <dd id="iris-color-detail">테스트 전입니다</dd>
+                </div>
+
+                <div>
+                  <dt>눈·얼굴 비율</dt>
+                  <dd id="eye-face-ratio">테스트 전입니다</dd>
+                </div>
+
+                <div>
+                  <dt>피부 HSV</dt>
+                  <dd id="skin-hsv-detail">테스트 전입니다</dd>
+                </div>
+
+                <div>
+                  <dt>홍채 HSV</dt>
+                  <dd id="iris-hsv-detail">테스트 전입니다</dd>
+                </div>
               </dl>
 
               <p id="iris-result-status" class="result-analysis-note">
@@ -584,55 +637,107 @@
                 </div>
 
                 <div id="result-product-grid" class="result-product-grid">
-                  <article class="result-product-card" data-lens-id="lens-01">
+                  <article class="result-product-card" data-rank="1">
                     <span class="result-best-label">BEST</span>
+
                     <div class="result-product-image-placeholder">
-                      <span>LENS IMAGE</span>
+                      <span>렌즈 이미지 준비 중</span>
                     </div>
-                    <h3>젬아워 디오네 소프트 브라운</h3>
-                    <p>따뜻한 인상을 살리는 자연스럽고 맑은 브라운</p>
-                    <div class="result-product-meta">
-                      <span>14.2mm</span><span>KRW 25,000</span>
+
+                    <div class="result-product-info">
+                      <h3>추천 렌즈를 불러오는 중이에요</h3>
+                      <p>테스트 결과에 따라 가장 잘 어울리는 렌즈가 표시됩니다.</p>
+
+                      <div class="result-product-meta">
+                        <span>전체 --.-mm</span>
+                        <span>그래픽 --.-mm</span>
+                      </div>
                     </div>
+
                     <div class="result-product-actions">
-                      <button class="result-try-button" type="button" data-lens-name="디오네 소프트 브라운">
+                      <button
+                        class="result-try-button"
+                        type="button"
+                        disabled
+                      >
                         ✦ 가상 착용
                       </button>
-                      <button class="result-detail-button" type="button">상세 보기</button>
+
+                      <button
+                        class="result-detail-button"
+                        type="button"
+                        disabled
+                      >
+                        상세 보기
+                      </button>
                     </div>
                   </article>
 
-                  <article class="result-product-card" data-lens-id="lens-02">
+                  <article class="result-product-card" data-rank="2">
                     <div class="result-product-image-placeholder">
-                      <span>LENS IMAGE</span>
+                      <span>렌즈 이미지 준비 중</span>
                     </div>
-                    <h3>마이피프 피픈 브리니 베이지</h3>
-                    <p>반짝이는 글리터와 부드러운 베이지 컬러의 조화</p>
-                    <div class="result-product-meta">
-                      <span>14.0mm</span><span>KRW 28,000</span>
+
+                    <div class="result-product-info">
+                      <h3>추천 렌즈를 불러오는 중이에요</h3>
+                      <p>테스트 결과에 따라 두 번째 추천 렌즈가 표시됩니다.</p>
+
+                      <div class="result-product-meta">
+                        <span>전체 --.-mm</span>
+                        <span>그래픽 --.-mm</span>
+                      </div>
                     </div>
+
                     <div class="result-product-actions">
-                      <button class="result-try-button" type="button" data-lens-name="피픈 브리니 베이지">
+                      <button
+                        class="result-try-button"
+                        type="button"
+                        disabled
+                      >
                         ✦ 가상 착용
                       </button>
-                      <button class="result-detail-button" type="button">상세 보기</button>
+
+                      <button
+                        class="result-detail-button"
+                        type="button"
+                        disabled
+                      >
+                        상세 보기
+                      </button>
                     </div>
                   </article>
 
-                  <article class="result-product-card" data-lens-id="lens-03">
+                  <article class="result-product-card" data-rank="3">
                     <div class="result-product-image-placeholder">
-                      <span>LENS IMAGE</span>
+                      <span>렌즈 이미지 준비 중</span>
                     </div>
-                    <h3>츄렌즈 밀크앤티 크림모카</h3>
-                    <p>데일리로 착용하기 좋은 차분한 밀크 브라운</p>
-                    <div class="result-product-meta">
-                      <span>13.8mm</span><span>KRW 22,000</span>
+
+                    <div class="result-product-info">
+                      <h3>추천 렌즈를 불러오는 중이에요</h3>
+                      <p>테스트 결과에 따라 세 번째 추천 렌즈가 표시됩니다.</p>
+
+                      <div class="result-product-meta">
+                        <span>전체 --.-mm</span>
+                        <span>그래픽 --.-mm</span>
+                      </div>
                     </div>
+
                     <div class="result-product-actions">
-                      <button class="result-try-button" type="button" data-lens-name="밀크앤티 크림모카">
+                      <button
+                        class="result-try-button"
+                        type="button"
+                        disabled
+                      >
                         ✦ 가상 착용
                       </button>
-                      <button class="result-detail-button" type="button">상세 보기</button>
+
+                      <button
+                        class="result-detail-button"
+                        type="button"
+                        disabled
+                      >
+                        상세 보기
+                      </button>
                     </div>
                   </article>
                 </div>
@@ -726,9 +831,11 @@
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  
   <script src="./js/script.js"></script>
   <script src="./js/iris.js"></script>
   <script src="./js/result.js"></script>
+  <script src="./export/result-export.js"></script>
   <script src="./js/ai-bridge.js"></script>
 </body>
 </html>
