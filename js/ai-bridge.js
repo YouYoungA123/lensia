@@ -104,6 +104,212 @@
     return `${url}${url.includes("?") ? "&" : "?"}t=${Date.now()}`;
   }
 
+  function dataUrlToFile(dataUrl, fileName) {
+    const parts = dataUrl.split(",");
+    const mimeMatch = parts[0].match(/:(.*?);/);
+    const mime = mimeMatch ? mimeMatch[1] : "image/jpeg";
+    const binary = atob(parts[1]);
+    const bytes = new Uint8Array(binary.length);
+
+    for (let index = 0; index < binary.length; index += 1) {
+      bytes[index] = binary.charCodeAt(index);
+    }
+
+    return new File([bytes], fileName, { type: mime });
+  }
+
+  function setIrisPreview(file) {
+    const previewImage = qs("#iris-preview-image");
+    const previewPlaceholder = qs("#iris-preview-placeholder");
+    const previewBox = qs("#iris-preview-box");
+    const removeButton = qs("#iris-remove-button");
+    const analyzeButton = qs("#iris-analyze-button");
+    const fileStatus = qs(".iris-file-status");
+    const fileStatusIcon = qs("#iris-file-status-icon");
+
+    selectedImageFile = file;
+    window.lensiaSelectedImageFile = file;
+
+    if (previewImage) {
+      previewImage.src = URL.createObjectURL(file);
+      previewImage.hidden = false;
+    }
+
+    if (previewPlaceholder) {
+      previewPlaceholder.hidden = true;
+    }
+
+    previewBox?.classList.add("has-image");
+
+    if (removeButton) {
+      removeButton.hidden = false;
+    }
+
+    if (analyzeButton) {
+      analyzeButton.disabled = false;
+    }
+
+    fileStatus?.classList.add("has-file");
+
+    if (fileStatusIcon) {
+      fileStatusIcon.textContent = "●";
+    }
+
+    setText("#iris-file-status-text", file.name);
+  }
+
+  function stopStream(stream) {
+    stream?.getTracks().forEach((track) => track.stop());
+  }
+
+  function closeCameraModal(modal, stream) {
+    stopStream(stream);
+    modal?.remove();
+  }
+
+  function createCameraModal(stream, target) {
+    const modal = document.createElement("div");
+    modal.className = "lensia-camera-modal";
+    modal.innerHTML = `
+      <div class="lensia-camera-panel" role="dialog" aria-modal="true" aria-label="카메라 촬영">
+        <div class="lensia-camera-head">
+          <strong>카메라 촬영</strong>
+          <button type="button" class="lensia-camera-close" aria-label="닫기">×</button>
+        </div>
+        <video class="lensia-camera-video" autoplay playsinline muted></video>
+        <div class="lensia-camera-actions">
+          <button type="button" class="lensia-camera-shot">사진 찍기</button>
+          <button type="button" class="lensia-camera-cancel">취소</button>
+        </div>
+        <p class="lensia-camera-note">얼굴이 정면으로 보이게 맞춘 뒤 촬영해 주세요.</p>
+      </div>
+    `;
+
+    Object.assign(modal.style, {
+      position: "fixed",
+      inset: "0",
+      zIndex: "9999",
+      display: "grid",
+      placeItems: "center",
+      padding: "24px",
+      background: "rgba(28, 24, 34, 0.58)",
+      backdropFilter: "blur(8px)",
+    });
+
+    const panel = modal.querySelector(".lensia-camera-panel");
+    Object.assign(panel.style, {
+      width: "min(720px, 94vw)",
+      borderRadius: "28px",
+      padding: "20px",
+      background: "rgba(255, 255, 255, 0.96)",
+      boxShadow: "0 24px 80px rgba(30, 24, 40, 0.28)",
+    });
+
+    const head = modal.querySelector(".lensia-camera-head");
+    Object.assign(head.style, {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: "14px",
+      color: "#2f2b35",
+      fontSize: "18px",
+    });
+
+    const video = modal.querySelector(".lensia-camera-video");
+    Object.assign(video.style, {
+      width: "100%",
+      maxHeight: "62vh",
+      borderRadius: "20px",
+      background: "#111",
+      objectFit: "cover",
+    });
+
+    const actions = modal.querySelector(".lensia-camera-actions");
+    Object.assign(actions.style, {
+      display: "flex",
+      gap: "10px",
+      justifyContent: "center",
+      marginTop: "16px",
+    });
+
+    modal.querySelectorAll("button").forEach((button) => {
+      Object.assign(button.style, {
+        border: "0",
+        borderRadius: "999px",
+        padding: "12px 18px",
+        fontWeight: "800",
+        cursor: "pointer",
+      });
+    });
+
+    const shotButton = modal.querySelector(".lensia-camera-shot");
+    Object.assign(shotButton.style, {
+      background: "linear-gradient(135deg, #9f95ff, #7d6ce8)",
+      color: "#fff",
+    });
+
+    const closeButton = modal.querySelector(".lensia-camera-close");
+    const cancelButton = modal.querySelector(".lensia-camera-cancel");
+    const note = modal.querySelector(".lensia-camera-note");
+    Object.assign(note.style, {
+      margin: "12px 0 0",
+      textAlign: "center",
+      color: "#77717f",
+      fontSize: "13px",
+    });
+
+    video.srcObject = stream;
+
+    const close = () => closeCameraModal(modal, stream);
+    closeButton.addEventListener("click", close);
+    cancelButton.addEventListener("click", close);
+
+    shotButton.addEventListener("click", () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = video.videoWidth || 1280;
+      canvas.height = video.videoHeight || 720;
+      canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      const file = dataUrlToFile(
+        canvas.toDataURL("image/jpeg", 0.92),
+        `camera-${Date.now()}.jpg`,
+      );
+
+      if (target === "tryon") {
+        previewOriginal(file);
+      } else {
+        setIrisPreview(file);
+      }
+
+      close();
+    });
+
+    document.body.appendChild(modal);
+  }
+
+  async function openCamera(target) {
+    if (!navigator.mediaDevices?.getUserMedia) {
+      showToast("이 브라우저에서는 카메라 촬영을 지원하지 않아요. 사진 업로드를 사용해 주세요.");
+      return;
+    }
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: target === "tryon" ? "user" : "environment",
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+        },
+        audio: false,
+      });
+
+      createCameraModal(stream, target);
+    } catch (error) {
+      console.warn("Camera permission or device error", error);
+      showToast("카메라를 열 수 없어요. 브라우저 권한을 허용하거나 사진 업로드를 사용해 주세요.");
+    }
+  }
+
   function fileFromInputs(selectors) {
     for (const selector of selectors) {
       const file = qs(selector)?.files?.[0];
@@ -448,6 +654,18 @@
   }
 
   function bindActions() {
+    qs("#iris-camera-button")?.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      openCamera("iris");
+    }, true);
+
+    qs("#tryon-camera-button")?.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      openCamera("tryon");
+    }, true);
+
     qs("#iris-analyze-button")?.addEventListener("click", analyzeFromIrisPage, true);
 
     qs("#tryon-analyze-button")?.addEventListener("click", (event) => {
