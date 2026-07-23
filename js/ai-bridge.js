@@ -474,7 +474,7 @@
     formData.append("image", file);
     formData.append("lens_color", normalizeHex(lensColor));
     formData.append("graphic_scale", "1.0");
-    formData.append("tryon_alpha", selectedLensAsset ? "0.72" : "0.38");
+    formData.append("tryon_alpha", selectedLensAsset ? "0.52" : "0.38");
 
     if (selectedLensAsset) {
       formData.append("lens_asset", selectedLensAsset);
